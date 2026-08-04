@@ -1,0 +1,5 @@
+# In your project root .gitignore
+/node_modules
+/.next/
+.env*
+!.env*.example
