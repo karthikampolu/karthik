@@ -45,7 +45,7 @@ export default function AboutPage() {
       </div>
 
       <div className="mt-20 border-t border-[color:var(--border)] pt-16">
-        <Eyebrow>Philosophy</Eyebrow>
+        {/* <Eyebrow>Philosophy</Eyebrow> */}
         <h2 className="font-display text-2xl md:text-3xl text-[color:var(--text)] mb-8 leading-snug">
           Knowledge compounds. Curiosity creates opportunities.
         </h2>

@@ -51,7 +51,7 @@ export default function Home() {
         <Container className="max-w-5xl py-16 sm:py-24">
           <div className="grid md:grid-cols-[1fr_1.4fr] gap-10 md:gap-20">
             <div>
-              <Eyebrow>Philosophy</Eyebrow>
+              {/* <Eyebrow>Philosophy</Eyebrow> */}
               <h2 className="font-display text-3xl md:text-[2.4rem] leading-tight text-[color:var(--text)]">
                 Knowledge compounds.
               </h2>
