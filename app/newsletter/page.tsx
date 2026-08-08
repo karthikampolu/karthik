@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Newsletter — AK",
-  description: "Occasional, thoughtful notes on technology, business, and building.",
+  description: "Daily, thoughtful insights on technology, business, and building.",
 };
 
 export default function NewsletterPage() {
@@ -16,8 +16,7 @@ export default function NewsletterPage() {
         Occasional notes, worth your time.
       </h1>
       <p className="text-[17px] text-[color:var(--text-muted)] max-w-md mb-10">
-        No frequent updates, no marketing language — just a short note now
-        and then on technology, business, finance, and product building.
+       A quick daily briefing on markets and business—only the stories and insights that matter.
       </p>
       <NewsletterForm />
     </Container>

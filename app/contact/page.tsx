@@ -26,11 +26,11 @@ const items = [
     label: "LinkedIn",
     href: "https://www.linkedin.com/in/karthik-a-942573328/",
   },
-  {
-    icon: Code2,
-    label: "GitHub",
-    href: "https://github.com/karthikampolu",
-  },
+  // {
+  //   icon: Code2,
+  //   label: "GitHub",
+  //   href: "https://github.com/karthikampolu",
+  // },
 ];
 
 export default function ContactPage() {
@@ -41,6 +41,11 @@ export default function ContactPage() {
       <h1 className="font-display text-4xl md:text-5xl text-[color:var(--text)] leading-tight mb-10">
         Say hello.
       </h1>
+      
+            <p className="text-[16px] text-[color:var(--text-muted)] leading-relaxed mb-10 max-w-lg">
+        Always happy to talk about life, career, business, or potential
+        collaborations.
+      </p>
 
       <ul className="space-y-5 mb-14">
         {items.map((item) => (

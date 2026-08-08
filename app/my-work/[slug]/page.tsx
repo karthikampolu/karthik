@@ -33,12 +33,12 @@ export default function ProjectDetailPage({
 
   return (
     <Container className="max-w-3xl py-20 md:py-28">
-      <Link
-        href="/projects"
-        className="underline-fade text-[14px] text-[color:var(--text-muted)]"
-      >
-        ← All projects
-      </Link>
+<Link
+  href="/my-work"
+  className="underline-fade text-[14px] text-[color:var(--text-muted)]"
+>
+  ← All work
+</Link>
 
 <div className="mt-8 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 sm:gap-6">
   <div>

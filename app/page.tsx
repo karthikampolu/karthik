@@ -37,8 +37,8 @@ export default function Home() {
             following.
           </p>
           <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
-            <ButtonLink href="/projects" variant="primary" className="w-full sm:w-auto">
-              View Projects
+            <ButtonLink href="/my-work" variant="primary" className="w-full sm:w-auto">
+              View my work
             </ButtonLink>
             <ButtonLink href="/newsletter" variant="secondary" className="w-full sm:w-auto">
               Subscribe
@@ -82,8 +82,7 @@ export default function Home() {
       <section className="border-t border-[color:var(--border)]">
         <Container className="max-w-5xl py-16 sm:py-24 text-center">
           <h2 className="font-display text-2xl md:text-3xl text-[color:var(--text)] max-w-lg mx-auto leading-snug">
-            Following along is easy — the projects and a few thoughts, sent
-            occasionally.
+            Following along is easy — the day's most important stories, summarized in minutes.
           </h2>
           <div className="mt-8">
             <ButtonLink href="/newsletter" variant="primary" className="w-full sm:w-auto">
