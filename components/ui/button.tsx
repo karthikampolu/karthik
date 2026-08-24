@@ -38,9 +38,14 @@ export function ButtonLink({
   variant = "primary",
   className,
   children,
-}: CommonProps & { href: string }) {
+  external,
+}: CommonProps & { href: string; external?: boolean }) {
   return (
-    <Link href={href} className={cn(base, variants[variant], className)}>
+    <Link
+      href={href}
+      className={cn(base, variants[variant], className)}
+      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+    >
       {children}
     </Link>
   );
