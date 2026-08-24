@@ -6,94 +6,92 @@ type Props = {
 };
 
 const WIDTH = 640;
-const HEIGHT = 320;
-const PAD_LEFT = 44;
-const PAD_BOTTOM = 64;
+const ROW_H = 40;
+const PAD_LEFT = 168;
 const PAD_TOP = 16;
-const PAD_RIGHT = 16;
+const PAD_BOTTOM = 36;
+const PAD_RIGHT = 56;
+const BAR_H = 20;
 
-/** Simple categorical bar chart — no implied order between bars. */
+/**
+ * Horizontal bar chart for a single unordered, nominal category set.
+ * One series → one color for every bar (no value-ramp on nominal data) —
+ * identity already comes from the row label, not from hue.
+ */
 export default function CategoryBarChart({ data, ariaLabel, xLabel, yLabel }: Props) {
+  const height = PAD_TOP + PAD_BOTTOM + data.length * ROW_H;
   const plotW = WIDTH - PAD_LEFT - PAD_RIGHT;
-  const plotH = HEIGHT - PAD_TOP - PAD_BOTTOM;
   const max = Math.max(...data.map((d) => d.value));
-  const niceMax = Math.ceil(max / 5) * 5 || 1;
-  const barGap = 14;
-  const barW = plotW / data.length - barGap;
+  const niceMax = Math.ceil(max / 4) * 4 || 1;
+  const xFor = (v: number) => (v / niceMax) * plotW;
 
-  const ticks = 5;
-  const tickVals = Array.from({ length: ticks + 1 }, (_, i) => (niceMax / ticks) * i);
+  const ticks = 4;
+  const tickVals = Array.from({ length: ticks + 1 }, (_, i) => Math.round((niceMax / ticks) * i));
 
   return (
     <figure className="w-full">
       <svg
-        viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
+        viewBox={`0 0 ${WIDTH} ${height}`}
         role="img"
         aria-label={ariaLabel}
         className="w-full h-auto"
       >
         <title>{ariaLabel}</title>
-        {/* gridlines */}
-        {tickVals.map((t) => {
-          const y = PAD_TOP + plotH - (t / niceMax) * plotH;
-          return (
-            <g key={t}>
-              <line
-                x1={PAD_LEFT}
-                x2={WIDTH - PAD_RIGHT}
-                y1={y}
-                y2={y}
-                stroke="var(--border)"
-                strokeWidth={1}
-              />
-              <text
-                x={PAD_LEFT - 8}
-                y={y}
-                textAnchor="end"
-                dominantBaseline="middle"
-                fontSize={11}
-                fill="var(--text-faint)"
-              >
-                {Math.round(t)}
-              </text>
-            </g>
-          );
-        })}
 
-        {/* bars */}
+        {tickVals.map((t) => (
+          <g key={t}>
+            <line
+              x1={PAD_LEFT + xFor(t)}
+              x2={PAD_LEFT + xFor(t)}
+              y1={PAD_TOP - 4}
+              y2={height - PAD_BOTTOM + 4}
+              stroke="var(--border)"
+              strokeWidth={1}
+            />
+            <text
+              x={PAD_LEFT + xFor(t)}
+              y={height - PAD_BOTTOM + 20}
+              textAnchor="middle"
+              fontSize={11}
+              fill="var(--text-faint)"
+            >
+              {t}
+            </text>
+          </g>
+        ))}
+
         {data.map((d, i) => {
-          const x = PAD_LEFT + i * (barW + barGap) + barGap / 2;
-          const h = (d.value / niceMax) * plotH;
-          const y = PAD_TOP + plotH - h;
+          const y = PAD_TOP + i * ROW_H + (ROW_H - BAR_H) / 2;
+          const w = Math.max(xFor(d.value), 2);
           return (
             <g key={d.label}>
+              <text
+                x={PAD_LEFT - 12}
+                y={y + BAR_H / 2}
+                textAnchor="end"
+                dominantBaseline="middle"
+                fontSize={12.5}
+                fill="var(--text-muted)"
+              >
+                {d.label}
+              </text>
               <rect
-                x={x}
+                x={PAD_LEFT}
                 y={y}
-                width={barW}
-                height={h}
+                width={w}
+                height={BAR_H}
+                rx={4}
                 fill="var(--accent)"
-                opacity={0.85}
-                rx={2}
               />
               <text
-                x={x + barW / 2}
-                y={y - 6}
-                textAnchor="middle"
-                fontSize={11}
+                x={PAD_LEFT + w + 8}
+                y={y + BAR_H / 2}
+                dominantBaseline="middle"
+                fontSize={12.5}
+                fontWeight={600}
                 fill="var(--text)"
               >
                 {d.value}
-              </text>
-              <text
-                x={x + barW / 2}
-                y={PAD_TOP + plotH + 16}
-                textAnchor="middle"
-                fontSize={10.5}
-                fill="var(--text-muted)"
-                transform={`rotate(20 ${x + barW / 2} ${PAD_TOP + plotH + 16})`}
-              >
-                {d.label}
               </text>
             </g>
           );
@@ -101,16 +99,16 @@ export default function CategoryBarChart({ data, ariaLabel, xLabel, yLabel }: Pr
 
         <line
           x1={PAD_LEFT}
-          x2={WIDTH - PAD_RIGHT}
-          y1={PAD_TOP + plotH}
-          y2={PAD_TOP + plotH}
+          x2={PAD_LEFT}
+          y1={PAD_TOP - 4}
+          y2={height - PAD_BOTTOM + 4}
           stroke="var(--border-strong)"
           strokeWidth={1}
         />
       </svg>
       <figcaption className="mt-2 flex justify-between text-[11px] font-mono uppercase tracking-wide text-[color:var(--text-faint)]">
-        <span>{xLabel}</span>
         <span>{yLabel}</span>
+        <span>{xLabel}</span>
       </figcaption>
     </figure>
   );

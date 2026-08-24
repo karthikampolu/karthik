@@ -84,7 +84,14 @@ export default function RatioDotStripChart({ data, ariaLabel, xLabel, yLabel, no
               >
                 {d.label}
               </text>
-              <circle cx={xFor(d.value)} cy={y} r={5} fill="var(--accent)" />
+              <circle
+                cx={xFor(d.value)}
+                cy={y}
+                r={5}
+                fill="var(--accent)"
+                stroke="var(--surface)"
+                strokeWidth={2}
+              />
               <text
                 x={xFor(d.value) + 10}
                 y={y}

@@ -34,7 +34,10 @@ export type ScaleEntry = {
     sourceUrl: string;
     asOf: string;
   };
-  whyFits: string;
+  /** A one-line yes/no test the reader can apply to any dataset. */
+  quickTest: string;
+  /** 2-3 short, concrete reasons this dataset passes that test. */
+  whyFits: string[];
   table: ScaleTable;
   chart: ScaleChart;
 };
@@ -46,17 +49,22 @@ export const measurementScales: ScaleEntry[] = [
     name: "Nominal Scale",
     shortLabel: "Nominal",
     definition:
-      "Nominal data sorts observations into named categories with no inherent order or numeric meaning — labels like a disaster type or a species name. You can count how often each category occurs, but you can't rank, subtract, or average the categories themselves.",
+      "Nominal data is just names for groups — labels with no order and no numbers attached. Think \"eye color\" or \"country.\" The only thing you can really do with it is count how many fall into each group.",
     whyUsed:
-      "It's used in statistics to summarize frequencies and proportions across groups (mode, chi-square tests) when the categories themselves carry no quantitative relationship.",
+      "Statisticians use it to answer \"how many of each?\" questions — counts, percentages, and the mode (most common group) — never an average.",
     dataset: {
       name: "U.S. Billion-Dollar Weather and Climate Disasters, by disaster type (2024)",
       sourceName: "NOAA NCEI — Billion-Dollar Weather and Climate Disasters",
       sourceUrl: "https://www.ncei.noaa.gov/access/billions/",
       asOf: "Full year 2024",
     },
-    whyFits:
-      "\"Disaster type\" (Severe Storm, Tropical Cyclone, Wildfire, …) is a label with no natural ranking — a Winter Storm isn't quantitatively \"more\" or \"less\" than a Wildfire. Only the category name and the count of events per category carry meaning here.",
+    quickTest:
+      "Could you rearrange these categories in any order without losing information? If yes, it's nominal.",
+    whyFits: [
+      "\"Wildfire,\" \"Flooding,\" \"Winter Storm\" are just names — none of them is naturally \"before\" or \"after\" another.",
+      "The only valid math here is counting: 17 severe storms happened, 1 wildfire did. You can't average \"Wildfire\" and \"Flooding.\"",
+      "Swap the row order in the table above — nothing about the data changes. That's the tell.",
+    ],
     table: {
       columns: ["Disaster Type", "Separate Billion-Dollar Events (2024)"],
       rows: [
@@ -88,17 +96,22 @@ export const measurementScales: ScaleEntry[] = [
     name: "Ordinal Scale",
     shortLabel: "Ordinal",
     definition:
-      "Ordinal data has a meaningful order, but the gaps between categories aren't necessarily equal or measurable. You can say one value ranks higher than another, but not by how much.",
+      "Ordinal data can be ranked low to high, but the space between ranks isn't a fixed, equal amount. Think \"1st, 2nd, 3rd place\" — you know the order, not how far apart they finished.",
     whyUsed:
-      "It's used in statistics when you need to rank or compare severity/preference, using tools like the median and rank-based tests, rather than means that assume equal spacing.",
+      "Statisticians use it to compare rank and find the middle value (median) — but never a mathematical average, since the steps between ranks aren't guaranteed equal.",
     dataset: {
       name: "Worst U.S. Drought Monitor category currently affecting each state",
       sourceName: "U.S. Drought Monitor (NDMC / NOAA / USDA)",
       sourceUrl: "https://droughtmonitor.unl.edu/CurrentMap/StateDroughtMonitor.aspx",
       asOf: "Data valid August 18, 2026",
     },
-    whyFits:
-      "The Drought Monitor's categories (None → D0 → D1 → D2 → D3 → D4) are explicitly ordered by severity, but the jump from D1 to D2 isn't the same quantitative \"distance\" as D3 to D4 — the scale ranks conditions without a fixed unit between ranks.",
+    quickTest:
+      "Is there a clear order, but the gap between steps isn't a fixed, countable amount? Then it's ordinal.",
+    whyFits: [
+      "The categories have a real order: None is better than D0, which is better than D1, all the way to D4.",
+      "But \"D1 to D2\" isn't the same size jump as \"D3 to D4\" — there's no ruler measuring the distance between drought categories.",
+      "You can say Texas (D4) is worse off than Georgia (D1) — just not \"how many times worse,\" the way you could with a plain number.",
+    ],
     table: {
       columns: ["State", "Worst Category Currently Observed"],
       rows: [
@@ -133,17 +146,22 @@ export const measurementScales: ScaleEntry[] = [
     name: "Interval Scale",
     shortLabel: "Interval",
     definition:
-      "Interval data has equal, measurable gaps between values, so addition and subtraction are meaningful — but there's no true zero. Zero doesn't mean \"none of the quantity,\" so ratios aren't meaningful (80°F isn't \"twice as warm\" as 40°F).",
+      "Interval data has equal, ruler-like steps between values, so adding and subtracting makes sense. But zero is just a point on the scale, not \"none of it\" — so you can't say one value is a multiple of another.",
     whyUsed:
-      "It's used in statistics wherever means and standard deviations of a continuous quantity are needed, but multiplicative comparisons would be misleading.",
+      "Statisticians use it to average and compare continuous values meaningfully — but never as a ratio, since \"zero\" doesn't mean \"nothing\" here.",
     dataset: {
       name: "Central Park, NY — normal monthly average temperature (1991–2020)",
       sourceName: "National Weather Service, NWS Forecast Office New York, NY",
       sourceUrl: "https://www.weather.gov/okx/CentralParkHistorical",
       asOf: "30-year normals period: 1991–2020",
     },
-    whyFits:
-      "Fahrenheit temperature has equal-sized degrees, so the 9.1° gap from June to July means the same thing as any other 9.1° gap. But 0°F is an arbitrary point on the scale, not \"no temperature\" — so July (77.5°F) isn't meaningfully \"twice as hot\" as a 38.75°F day.",
+    quickTest:
+      "Are the gaps between numbers even and measurable, but \"zero\" doesn't mean \"nothing exists\"? Then it's interval.",
+    whyFits: [
+      "Every degree Fahrenheit is the same size step — the gap from 63.2° to 72° means exactly what the same 8.8° gap means anywhere else on the scale.",
+      "0°F isn't \"no temperature\" — it's just a cold day in North Dakota. It's an arbitrary marker, not an absence.",
+      "Because zero is arbitrary, saying \"July is twice as hot as a 38.75° day\" is meaningless — even though July really is 38.75° warmer.",
+    ],
     table: {
       columns: ["Month", "Normal Average Temperature (°F)"],
       rows: [
@@ -180,17 +198,22 @@ export const measurementScales: ScaleEntry[] = [
     name: "Ratio Scale",
     shortLabel: "Ratio",
     definition:
-      "Ratio data has equal intervals and a true, meaningful zero — zero means a total absence of the quantity. That makes ratios meaningful: a value of 200 really is twice as much as 100.",
+      "Ratio data is like interval data, plus one thing: zero really means \"none of it.\" That true zero is what makes ratios and multiples meaningful — 200 really is twice as much as 100.",
     whyUsed:
-      "It's used in statistics for the widest range of operations — means, ratios, geometric means, coefficients of variation — since every arithmetic comparison is valid.",
+      "Statisticians use it for the full toolkit — averages, ratios, percent change, coefficients of variation — since every kind of arithmetic comparison holds up.",
     dataset: {
       name: "Real-time streamflow discharge at eight USGS gauging stations",
       sourceName: "USGS National Water Information System (NWIS)",
       sourceUrl: "https://waterdata.usgs.gov/nwis/uv",
       asOf: "August 23, 2026 (provisional, subject to revision)",
     },
-    whyFits:
-      "Streamflow discharge is measured in cubic feet per second from a true zero (a dry streambed has 0 cfs, not an arbitrary reference point). That true zero is what makes it valid to say the Mississippi's flow is roughly 1,950× Peachtree Creek's — a ratio statement interval data can't support.",
+    quickTest:
+      "Does zero mean a true, total absence of the thing being measured? Then it's ratio.",
+    whyFits: [
+      "0 cubic feet per second means an actually dry streambed — a real absence of flow, not just a low reading.",
+      "Because zero is real, ratios hold up: the Mississippi's ~174,000 cfs genuinely is about 9,900× Peachtree Creek's 17.5 cfs.",
+      "Every basic stat works here — you can average these flows, compare them as percentages, or rank them — nothing is off-limits like it was with temperature.",
+    ],
     table: {
       columns: ["USGS Gauging Station", "Discharge (cubic ft/sec)"],
       rows: [

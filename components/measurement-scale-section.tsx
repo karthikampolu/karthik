@@ -1,4 +1,4 @@
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Check } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
 import DataTable from "@/components/ui/data-table";
 import CategoryBarChart from "@/components/charts/category-bar-chart";
@@ -33,6 +33,15 @@ export default function MeasurementScaleSection({ scale }: { scale: ScaleEntry }
         {scale.whyUsed}
       </p>
 
+      <div className="mt-8 max-w-2xl rounded-lg border-l-[3px] border-[color:var(--accent)] bg-[color:var(--accent-soft)] px-5 py-4">
+        <p className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-[color:var(--accent)] mb-1.5">
+          The quick test
+        </p>
+        <p className="text-[15px] leading-relaxed text-[color:var(--text)]">
+          {scale.quickTest}
+        </p>
+      </div>
+
       <div className="mt-10 rounded-xl border border-[color:var(--border)] bg-[color:var(--surface)] p-6 md:p-8">
         <h3 className="font-display text-xl text-[color:var(--text)] mb-1">
           {scale.dataset.name}
@@ -46,11 +55,6 @@ export default function MeasurementScaleSection({ scale }: { scale: ScaleEntry }
           columns={scale.table.columns}
           rows={scale.table.rows}
         />
-
-        <p className="mt-6 text-[15px] leading-relaxed text-[color:var(--text-muted)]">
-          <span className="text-[color:var(--text)] font-medium">Why this fits {scale.shortLabel.toLowerCase()} data: </span>
-          {scale.whyFits}
-        </p>
 
         <div className="mt-8">
           {scale.chart.type === "category-bar" && (
@@ -88,6 +92,25 @@ export default function MeasurementScaleSection({ scale }: { scale: ScaleEntry }
               note={scale.chart.note}
             />
           )}
+        </div>
+
+        <div className="mt-8">
+          <p className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-[color:var(--text-faint)] mb-3">
+            Why this fits {scale.shortLabel.toLowerCase()} data
+          </p>
+          <ul className="space-y-2.5">
+            {scale.whyFits.map((point, i) => (
+              <li key={i} className="flex items-start gap-2.5 text-[15px] leading-relaxed text-[color:var(--text-muted)]">
+                <Check
+                  size={16}
+                  strokeWidth={2.25}
+                  className="mt-[3px] shrink-0 text-[color:var(--accent)]"
+                  aria-hidden="true"
+                />
+                <span>{point}</span>
+              </li>
+            ))}
+          </ul>
         </div>
 
         <div className="mt-8 flex flex-col items-start gap-2">
