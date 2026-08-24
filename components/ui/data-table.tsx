@@ -31,7 +31,7 @@ export default function DataTable({ caption, columns, rows }: Props) {
               {row.map((cell, j) => (
                 <td
                   key={j}
-                  className="px-4 py-3 text-[color:var(--text)] whitespace-nowrap"
+                  className="px-4 py-3 text-[color:var(--text)] align-top"
                 >
                   {cell}
                 </td>

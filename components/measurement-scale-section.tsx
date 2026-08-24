@@ -3,8 +3,7 @@ import { ButtonLink } from "@/components/ui/button";
 import DataTable from "@/components/ui/data-table";
 import CategoryBarChart from "@/components/charts/category-bar-chart";
 import OrdinalBarChart from "@/components/charts/ordinal-bar-chart";
-import IntervalLineChart from "@/components/charts/interval-line-chart";
-import RatioDotStripChart from "@/components/charts/ratio-dot-strip-chart";
+import HistogramChart from "@/components/charts/histogram-chart";
 import type { ScaleEntry } from "@/lib/data/measurement-scales";
 
 export default function MeasurementScaleSection({ scale }: { scale: ScaleEntry }) {
@@ -74,17 +73,8 @@ export default function MeasurementScaleSection({ scale }: { scale: ScaleEntry }
               yLabel={scale.chart.yLabel}
             />
           )}
-          {scale.chart.type === "line" && (
-            <IntervalLineChart
-              data={scale.chart.data}
-              ariaLabel={chartAriaLabel}
-              xLabel={scale.chart.xLabel}
-              yLabel={scale.chart.yLabel}
-              note={scale.chart.note}
-            />
-          )}
-          {scale.chart.type === "dot-strip" && (
-            <RatioDotStripChart
+          {scale.chart.type === "histogram" && (
+            <HistogramChart
               data={scale.chart.data}
               ariaLabel={chartAriaLabel}
               xLabel={scale.chart.xLabel}

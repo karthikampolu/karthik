@@ -4,7 +4,7 @@
 
 export type ScaleId = "nominal" | "ordinal" | "interval" | "ratio";
 
-export type ChartType = "category-bar" | "ordinal-bar" | "line" | "dot-strip";
+export type ChartType = "category-bar" | "ordinal-bar" | "histogram";
 
 export type ScaleTable = {
   columns: string[];
@@ -146,11 +146,11 @@ export const measurementScales: ScaleEntry[] = [
     name: "Interval Scale",
     shortLabel: "Interval",
     definition:
-      "Interval data has equal, ruler-like steps between values, so adding and subtracting makes sense. But zero is just a point on the scale, not \"none of it\" — so you can't say one value is a multiple of another.",
+      "Interval data sits on a scale with equal, ruler-like steps, so adding and subtracting makes sense. But zero is just a point on that ruler, not \"none of it\" — so you can't say one value is a multiple of another. This is also where the name comes from: statisticians sort continuous data like this into equal-width \"class intervals\" (30–40°, 40–50°, and so on) and count how many observations land in each one.",
     whyUsed:
-      "Statisticians use it to average and compare continuous values meaningfully — but never as a ratio, since \"zero\" doesn't mean \"nothing\" here.",
+      "Statisticians use it to average and compare continuous values meaningfully, and to bucket them into equal-width classes for a frequency table — but never as a ratio, since \"zero\" doesn't mean \"nothing\" here.",
     dataset: {
-      name: "Central Park, NY — normal monthly average temperature (1991–2020)",
+      name: "Central Park, NY — normal monthly average temperature (1991–2020), grouped into 10° classes",
       sourceName: "National Weather Service, NWS Forecast Office New York, NY",
       sourceUrl: "https://www.weather.gov/okx/CentralParkHistorical",
       asOf: "30-year normals period: 1991–2020",
@@ -158,38 +158,32 @@ export const measurementScales: ScaleEntry[] = [
     quickTest:
       "Are the gaps between numbers even and measurable, but \"zero\" doesn't mean \"nothing exists\"? Then it's interval.",
     whyFits: [
-      "Every degree Fahrenheit is the same size step — the gap from 63.2° to 72° means exactly what the same 8.8° gap means anywhere else on the scale.",
-      "0°F isn't \"no temperature\" — it's just a cold day in North Dakota. It's an arbitrary marker, not an absence.",
-      "Because zero is arbitrary, saying \"July is twice as hot as a 38.75° day\" is meaningless — even though July really is 38.75° warmer.",
+      "Every degree Fahrenheit is the same size step, so it's fair to carve the year into equal 10° classes — 30–40°, 40–50°, and so on — the way you would with any interval data.",
+      "0°F isn't \"no temperature,\" it's just a cold day in North Dakota — an arbitrary marker, not an absence. That's fine for building classes; it just means you can't say one class is \"twice as warm\" as another.",
+      "Notice New York's months split almost evenly between the cold classes (Dec–Feb) and the hot ones (Jun–Aug), with spring and fall doing the bridging — that shape is the whole point of grouping into classes.",
     ],
     table: {
-      columns: ["Month", "Normal Average Temperature (°F)"],
+      columns: ["Temperature Class (°F)", "Months in This Class", "Count"],
       rows: [
-        ["Jan", 33.7],
-        ["Mar", 42.8],
-        ["May", 63.2],
-        ["Jun", 72.0],
-        ["Jul", 77.5],
-        ["Aug", 76.1],
-        ["Oct", 57.9],
-        ["Dec", 39.1],
+        ["30 – 40°", "Jan (33.7°), Feb (35.9°), Dec (39.1°)", 3],
+        ["40 – 50°", "Mar (42.8°), Nov (48.0°)", 2],
+        ["50 – 60°", "Apr (53.7°), Oct (57.9°)", 2],
+        ["60 – 70°", "May (63.2°), Sep (69.2°)", 2],
+        ["70 – 80°", "Jun (72.0°), Jul (77.5°), Aug (76.1°)", 3],
       ],
     },
     chart: {
-      type: "line",
-      xLabel: "Month",
-      yLabel: "Normal avg. temperature (°F)",
+      type: "histogram",
+      xLabel: "Temperature class (°F)",
+      yLabel: "Number of months",
       data: [
-        { label: "Jan", value: 33.7 },
-        { label: "Mar", value: 42.8 },
-        { label: "May", value: 63.2 },
-        { label: "Jun", value: 72.0 },
-        { label: "Jul", value: 77.5 },
-        { label: "Aug", value: 76.1 },
-        { label: "Oct", value: 57.9 },
-        { label: "Dec", value: 39.1 },
+        { label: "30–40°", value: 3 },
+        { label: "40–50°", value: 2 },
+        { label: "50–60°", value: 2 },
+        { label: "60–70°", value: 2 },
+        { label: "70–80°", value: 3 },
       ],
-      note: "Y-axis is intentionally not zero-based — 0°F is not \"no temperature,\" so a zero baseline would be misleading here.",
+      note: "Bars touch — that's histogram convention, because the classes are continuous, equal-width slices of one scale (only possible because this is interval data), not separate categories.",
     },
   },
   {
@@ -198,11 +192,11 @@ export const measurementScales: ScaleEntry[] = [
     name: "Ratio Scale",
     shortLabel: "Ratio",
     definition:
-      "Ratio data is like interval data, plus one thing: zero really means \"none of it.\" That true zero is what makes ratios and multiples meaningful — 200 really is twice as much as 100.",
+      "Ratio data is like interval data, plus one thing: zero really means \"none of it.\" That true zero is what makes ratios and multiples meaningful — 200 really is twice as much as 100. Like interval data, it can also be sorted into equal-width classes and counted — the classic ratio-scale example being \"how many rivers fall into each size class.\"",
     whyUsed:
-      "Statisticians use it for the full toolkit — averages, ratios, percent change, coefficients of variation — since every kind of arithmetic comparison holds up.",
+      "Statisticians use it for the full toolkit — averages, ratios, percent change, coefficients of variation, and equal-width frequency classes — since every kind of arithmetic comparison holds up, all the way down to a true zero.",
     dataset: {
-      name: "Real-time streamflow discharge at eight USGS gauging stations",
+      name: "Real-time streamflow discharge at eight USGS gauging stations, grouped by size class",
       sourceName: "USGS National Water Information System (NWIS)",
       sourceUrl: "https://waterdata.usgs.gov/nwis/uv",
       asOf: "August 23, 2026 (provisional, subject to revision)",
@@ -210,38 +204,32 @@ export const measurementScales: ScaleEntry[] = [
     quickTest:
       "Does zero mean a true, total absence of the thing being measured? Then it's ratio.",
     whyFits: [
-      "0 cubic feet per second means an actually dry streambed — a real absence of flow, not just a low reading.",
-      "Because zero is real, ratios hold up: the Mississippi's ~174,000 cfs genuinely is about 9,900× Peachtree Creek's 17.5 cfs.",
-      "Every basic stat works here — you can average these flows, compare them as percentages, or rank them — nothing is off-limits like it was with temperature.",
+      "0 cubic feet per second means an actually dry streambed — a real absence of flow, not an arbitrary reference point like 0°F was.",
+      "Because zero is real, ratios hold up: the Mississippi's ~174,000 cfs genuinely is about 9,900× Peachtree Creek's 17.5 cfs — a comparison that only makes sense with a true zero underneath it.",
+      "The classes below span factors of ten precisely because a true zero lets you multiply your way up the scale — there's no equivalent \"×10 class\" you could build on the drought-severity ranks.",
     ],
     table: {
-      columns: ["USGS Gauging Station", "Discharge (cubic ft/sec)"],
+      columns: ["Discharge Class (cfs)", "Stations in This Class", "Count"],
       rows: [
-        ["Mississippi River at St. Louis, MO", "174,000"],
-        ["Columbia River at The Dalles, OR", "106,000"],
-        ["Colorado River at Lees Ferry, AZ", "8,420"],
-        ["Connecticut River at Thompsonville, CT", "3,180"],
-        ["Souris River near Sherwood, ND", "197"],
-        ["Missisquoi River at Swanton, VT", "157"],
-        ["Guadalupe River at Comfort, TX", "89.2"],
-        ["Peachtree Creek at Atlanta, GA", "17.5"],
+        ["10 – 100", "Peachtree Creek, GA (17.5); Guadalupe R., TX (89.2)", 2],
+        ["100 – 1,000", "Missisquoi R., VT (157); Souris R., ND (197)", 2],
+        ["1,000 – 10,000", "Connecticut R., CT (3,180); Colorado R., AZ (8,420)", 2],
+        ["10,000 – 100,000", "— no stations in this range —", 0],
+        ["100,000 – 1,000,000", "Columbia R., OR (106,000); Mississippi R., MO (174,000)", 2],
       ],
     },
     chart: {
-      type: "dot-strip",
-      xLabel: "Discharge, log scale (cubic ft/sec)",
-      yLabel: "Station",
+      type: "histogram",
+      xLabel: "Discharge class, log scale (cfs)",
+      yLabel: "Number of stations",
       data: [
-        { label: "Mississippi R. at St. Louis, MO", value: 174000 },
-        { label: "Columbia R. at The Dalles, OR", value: 106000 },
-        { label: "Colorado R. at Lees Ferry, AZ", value: 8420 },
-        { label: "Connecticut R. at Thompsonville, CT", value: 3180 },
-        { label: "Souris R. near Sherwood, ND", value: 197 },
-        { label: "Missisquoi R. at Swanton, VT", value: 157 },
-        { label: "Guadalupe R. at Comfort, TX", value: 89.2 },
-        { label: "Peachtree Creek at Atlanta, GA", value: 17.5 },
+        { label: "10–100", value: 2 },
+        { label: "100–1K", value: 2 },
+        { label: "1K–10K", value: 2 },
+        { label: "10K–100K", value: 0 },
+        { label: "100K–1M", value: 2 },
       ],
-      note: "Plotted on a log scale because discharge spans four orders of magnitude — the true zero point still anchors the scale even though it's off this chart.",
+      note: "These 8 stations happen to split neatly into small creeks and major rivers, with an empty class in between — a real gap this dataset shows, not a rounding artifact.",
     },
   },
 ];
