@@ -106,13 +106,7 @@ export default function UnionBudgetPartAPage() {
       {/* ================================================================ */}
       <h2 className={h2}>Part 1 — What the Budget Announced</h2>
 
-      <h3 className={h3}>Fiscal Position</h3>
-      <p className={p}>
-        The Effective Revenue Deficit jumped in the Revised Estimates. The
-        main reason: the government cut how much it had set aside as grants
-        for building capital assets. That doesn't automatically mean total
-        capital spending fell, though.
-      </p>
+
       <DataTable
         caption="Union Budget 2026-27 key numbers, in ₹ crore"
         columns={keyNumbersTable.columns}
@@ -138,33 +132,16 @@ export default function UnionBudgetPartAPage() {
           govtbudget.com
         </a>
       </p>
+<h3 className={h3}>Fiscal Position</h3>
+<p className={p}>
+  The Effective Revenue Deficit increased sharply from the 2025–26 Budget
+  Estimate to the 2025–26 Revised Estimate, largely because the grants for
+  creation of capital assets were revised downward. This should not
+  automatically be interpreted as a fall in total capital expenditure.
+</p>
+     
 
-      <h3 className={h3}>Capital Expenditure</h3>
-      <p className={p}>
-        Public capital spending has grown from about ₹2 lakh crore in
-        FY2014–15 to ₹12.2 lakh crore in FY2026–27, spread across programmes
-        like Sagarmala, Bharatmala, PM GatiShakti, PMAY, Jal Jeevan Mission,
-        PM Ujjwala Yojana, and UDAN.
-      </p>
-      <ul className={ul}>
-        <li>₹32,000 crore in 2014–15 grew to ₹2.78 lakh crore in FY2026–27 — almost a nine-fold jump.</li>
-        <li>Operating airports rose from 74 in 2014 to 165 in 2026.</li>
-        <li>
-          India now has the world's second-largest road network, at 63.73
-          lakh km. National highways grew about 61%, from 91,287 km in FY14
-          to 1,46,572 km by March 2026.
-        </li>
-      </ul>
 
-      <h3 className={h3}>Manufacturing</h3>
-      <p className={p}>
-        India wants manufacturing to create millions of jobs, move workers
-        out of low-productivity farming into better-paying industrial jobs,
-        and grow the sector's share of India's GDP.
-      </p>
-      <p className="text-[13px] text-[color:var(--text-faint)] -mt-2 mb-4">
-        Source: Business Today
-      </p>
 
       <h3 className={h3}>First Kartavya — Accelerate and Sustain Economic Growth</h3>
       <p className={p}>Six interventions, summarized:</p>
@@ -230,6 +207,22 @@ export default function UnionBudgetPartAPage() {
         (2025-26) → 4.4% (2026-27), aiming for the original 3% target by
         2028-30.
       </p>
+       <h3 className={h3}>Capital Expenditure</h3>
+      <p className={p}>
+        Public capital spending has grown from about ₹2 lakh crore in
+        FY2014–15 to ₹12.2 lakh crore in FY2026–27, spread across programmes
+        like Sagarmala, Bharatmala, PM GatiShakti, PMAY, Jal Jeevan Mission,
+        PM Ujjwala Yojana, and UDAN.
+      </p>
+      <ul className={ul}>
+        <li>₹32,000 crore in 2014–15 grew to ₹2.78 lakh crore in FY2026–27 — almost a nine-fold jump.</li>
+        <li>Operating airports rose from 74 in 2014 to 165 in 2026.</li>
+        <li>
+          India now has the world's second-largest road network, at 63.73
+          lakh km. National highways grew about 61%, from 91,287 km in FY14
+          to 1,46,572 km by March 2026.
+        </li>
+      </ul>
 
       <h3 className={h3}>Capex — Risks and Caveats</h3>
       <p className={p}>
@@ -259,6 +252,15 @@ export default function UnionBudgetPartAPage() {
         >
           does capex spending boost investment activity?
         </a>
+      </p>
+            <h3 className={h3}>Manufacturing</h3>
+      <p className={p}>
+        India wants manufacturing to create millions of jobs, move workers
+        out of low-productivity farming into better-paying industrial jobs,
+        and grow the sector's share of India's GDP.
+      </p>
+      <p className="text-[13px] text-[color:var(--text-faint)] -mt-2 mb-4">
+        Source: Business Today
       </p>
 
       <h3 className={h3}>Manufacturing — Challenges</h3>
