@@ -12,7 +12,7 @@ export const blogPosts: BlogPost[] = [
     title: "The Four Levels of Measurement",
     description:
       "Nominal, ordinal, interval, and ratio scales, each explained with a real government dataset instead of a toy example.",
-    date: "2026-08-26",
+    date: "2026-08-20",
     readingTime: "9 min read",
   },
 ];

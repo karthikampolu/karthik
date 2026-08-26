@@ -17,7 +17,7 @@ const dateFormatter = new Intl.DateTimeFormat("en-US", {
 
 export default function BlogIndexPage() {
   return (
-    <Container className="max-w-3xl py-20 md:py-28">
+    <Container className="max-w-5xl py-20 md:py-28">
       <Eyebrow>Blog</Eyebrow>
       <h1 className="font-display text-4xl md:text-5xl text-[color:var(--text)] leading-tight mb-4">
         Notes and write-ups.
@@ -27,30 +27,24 @@ export default function BlogIndexPage() {
         updated whenever something feels worth writing down.
       </p>
 
-      <div className="divide-y divide-[color:var(--border)] border-t border-b border-[color:var(--border)]">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {blogPosts.map((post) => (
           <Link
             key={post.slug}
             href={`/blog/${post.slug}`}
-            className="block py-8 group transition-opacity hover:opacity-80"
+            className="group flex flex-col justify-between rounded-xl border border-[color:var(--border)] bg-[color:var(--surface)] p-6 transition-colors hover:border-[color:var(--accent)]"
           >
-            <div className="flex items-start justify-between gap-6">
-              <div>
-                <h2 className="font-display text-xl md:text-2xl text-[color:var(--text)] mb-2 group-hover:underline">
-                  {post.title}
-                </h2>
-                <p className="text-[15px] text-[color:var(--text-muted)] max-w-md">
-                  {post.description}
-                </p>
-              </div>
-              <div className="shrink-0 pt-1 text-right">
-                <p className="font-mono text-[11px] uppercase tracking-wide text-[color:var(--text-faint)]">
-                  {dateFormatter.format(new Date(post.date))}
-                </p>
-                <p className="font-mono text-[11px] uppercase tracking-wide text-[color:var(--text-faint)] mt-1">
-                  {post.readingTime}
-                </p>
-              </div>
+            <div>
+              <h2 className="font-display text-lg md:text-xl text-[color:var(--text)] mb-2 leading-snug group-hover:underline">
+                {post.title}
+              </h2>
+              <p className="text-[14px] leading-relaxed text-[color:var(--text-muted)]">
+                {post.description}
+              </p>
+            </div>
+            <div className="mt-6 flex items-center justify-between font-mono text-[11px] uppercase tracking-wide text-[color:var(--text-faint)]">
+              <span>{dateFormatter.format(new Date(post.date))}</span>
+              <span>{post.readingTime}</span>
             </div>
           </Link>
         ))}
