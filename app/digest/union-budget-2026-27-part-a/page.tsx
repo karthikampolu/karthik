@@ -302,18 +302,18 @@ export default function UnionBudgetPartAPage() {
         </ul>
       </div>
 
-      {/* ---------------- AI usage note ---------------- */}
-      <div className="mt-10 rounded-lg border-l-[3px] border-[color:var(--accent)] bg-[color:var(--accent-soft)] px-5 py-4">
-        <p className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-[color:var(--accent)] mb-1.5">
-          A note on how this was made
-        </p>
-        <p className="text-[14px] leading-relaxed text-[color:var(--text)]">
-          The research, figures, and questions above are a collection of
-          information gathered on the budget speech. AI (Claude) was used to
-          structure and condense this write-up — it did not add its own
-          facts, analysis, or opinions to the content.
-        </p>
-      </div>
+{/* ---------------- Digest note ---------------- */}
+<div className="mt-10 rounded-lg border-l-[3px] border-[color:var(--accent)] bg-[color:var(--accent-soft)] px-5 py-4">
+  <p className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-[color:var(--accent)] mb-1.5">
+    About this digest
+  </p>
+  <p className="text-[14px] leading-relaxed text-[color:var(--text)]">
+    This digest brings together information, figures, and questions
+    collected while studying the Union Budget 2026–27. It is intended
+    as a reference to understand and explore the budget, with the
+    information organized and condensed for easier reading.
+  </p>
+</div>
     </Container>
   );
 }
