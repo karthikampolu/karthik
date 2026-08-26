@@ -7,12 +7,15 @@ export const metadata: Metadata = {
   title: "AK — Business Engineering",
   description:
     "Building useful software, understanding businesses, and continuously learning. AK writes about technology, business, and product building.",
-  metadataBase: new URL("https://ak.dev"),
+  metadataBase: new URL("https://www.karthikampolu.in"),
   openGraph: {
     title: "AK — Business Engineering",
     description:
       "Building useful software, understanding businesses, and continuously learning.",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
   },
 };
 
