@@ -1,5 +1,6 @@
 import Container from "@/components/ui/container";
 import Eyebrow from "@/components/ui/eyebrow";
+import DataTable from "@/components/ui/data-table";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -39,13 +40,38 @@ const sources = [
   },
 ];
 
-const h2 = "font-display text-2xl md:text-3xl text-[color:var(--text)] mt-16 mb-5 leading-snug";
-const h3 = "font-display text-xl text-[color:var(--text)] mt-9 mb-3";
+const highlights = [
+  { value: "4.4%", label: "Fiscal deficit target, 2026-27 (down from 6.4% in 2022-23)" },
+  { value: "₹12.2L cr", label: "Public capital expenditure, FY2026-27 (up from ~₹2L cr in FY2014-15)" },
+  { value: "₹16,95,768 cr", label: "Fiscal deficit, 2026-27 Budget Estimate" },
+  { value: "₹1.4L cr", label: "16th Finance Commission grants to states, FY2026-27" },
+  { value: "1,46,572 km", label: "National highway length, March 2026 (+61% since FY14)" },
+  { value: "165", label: "Operational airports, 2026 (up from 74 in 2014)" },
+  { value: "₹40,000 cr", label: "Electronics Components Manufacturing Scheme outlay" },
+  { value: "7", label: "High-Speed Rail corridors announced as \"growth connectors\"" },
+];
+
+const h2 = "font-display text-3xl md:text-4xl text-[color:var(--text)] mt-20 mb-6 leading-snug border-t border-[color:var(--border)] pt-12 first:border-t-0 first:pt-0 first:mt-0";
+const h3 = "font-display text-2xl text-[color:var(--text)] mt-12 mb-4 leading-snug";
 const h4 = "font-mono text-[13px] uppercase tracking-wide text-[color:var(--accent)] mt-6 mb-2";
 const p = "text-[16px] leading-relaxed text-[color:var(--text-muted)] mb-4";
 const ul = "space-y-2 text-[15px] leading-relaxed text-[color:var(--text-muted)] mb-4 list-disc pl-5 marker:text-[color:var(--text-faint)]";
 const nestedUl = "space-y-1.5 mt-2 mb-2 list-[circle] pl-5 marker:text-[color:var(--text-faint)]";
-const figCaption = "mt-2 text-[13px] text-[color:var(--text-faint)]";
+
+const keyNumbersTable = {
+  columns: ["₹ crore", "2024-25 Actuals", "2025-26 BE", "2025-26 RE", "2026-27 BE"],
+  rows: [
+    ["Revenue Receipts", "30,36,619", "34,20,409", "33,42,323", "35,33,150"],
+    ["Capital Receipts", "16,16,249", "16,44,936", "16,22,519", "18,14,165"],
+    ["Total Receipts", "46,52,867", "50,65,345", "49,64,842", "53,47,315"],
+    ["Total Expenditure", "46,52,867", "50,65,345", "49,64,842", "53,47,315"],
+    ["Effective Capital Expenditure", "13,24,609", "15,48,282", "14,03,906", "17,14,523"],
+    ["Revenue Deficit", "5,64,296", "5,23,846", "5,26,764", "5,92,344"],
+    ["Effective Revenue Deficit", "2,91,640", "96,654", "2,18,613", "99,642"],
+    ["Fiscal Deficit", "15,74,431", "15,68,936", "15,58,492", "16,95,768"],
+    ["Primary Deficit", "4,58,856", "2,92,598", "2,84,154", "2,91,796"],
+  ],
+};
 
 export default function UnionBudgetPartAPage() {
   return (
@@ -56,156 +82,75 @@ export default function UnionBudgetPartAPage() {
       </h1>
       <p className="text-[17px] leading-relaxed text-[color:var(--text-muted)] max-w-2xl">
         My notes on government spending and the three Kartavyas from Part A
-        of the Union Budget 2026-27 speech — what was announced, in plain
-        language.
+        of the Union Budget 2026-27 speech.
       </p>
 
-      <div className="mt-8 rounded-lg border-l-[3px] border-[color:var(--accent)] bg-[color:var(--accent-soft)] px-5 py-4">
-        <p className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-[color:var(--accent)] mb-1.5">
-          A note on how this was made
-        </p>
-        <p className="text-[14px] leading-relaxed text-[color:var(--text)]">
-          The research, figures, and questions below are my own notes on the
-          budget speech. AI (Claude) was used to structure this write-up and
-          rewrite my notes in simpler language — it did not add its own
-          facts, analysis, or opinions to the content.
-        </p>
+      {/* ---------------- Highlights ---------------- */}
+      <h2 className={h2}>Highlights</h2>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {highlights.map((h) => (
+          <div
+            key={h.label}
+            className="rounded-lg border border-[color:var(--border)] bg-[color:var(--surface)] p-4"
+          >
+            <p className="font-display text-xl text-[color:var(--text)] leading-tight mb-1.5">
+              {h.value}
+            </p>
+            <p className="text-[12.5px] leading-snug text-[color:var(--text-faint)]">
+              {h.label}
+            </p>
+          </div>
+        ))}
       </div>
 
-      <figure className="mt-12">
-        <img
-          src="/blog/union-budget-2026-27/investigation-worksheet.png"
-          alt="Personal worksheet listing budget areas (fiscal position, capex, manufacturing, semiconductors, biopharma, SMEs, infrastructure, energy, cities, finance), what the budget says on each, and follow-up questions to investigate."
-          className="w-full h-auto rounded-lg border border-[color:var(--border)]"
-        />
-        <figcaption className={figCaption}>
-          My starting worksheet for this post — what the budget says, and
-          what I set out to investigate.
-        </figcaption>
-      </figure>
+      {/* ================================================================ */}
+      {/* PART 1 — WHAT THE BUDGET ANNOUNCED                                */}
+      {/* ================================================================ */}
+      <h2 className={h2}>Part 1 — What the Budget Announced</h2>
 
-      {/* ---------------- Fiscal Position ---------------- */}
-      <h2 className={h2}>Fiscal Position</h2>
-
+      <h3 className={h3}>Fiscal Position</h3>
       <p className={p}>
         The Effective Revenue Deficit jumped in the Revised Estimates. The
         main reason: the government cut how much it had set aside as grants
         for building capital assets. That doesn't automatically mean total
         capital spending fell, though.
       </p>
-
-      <figure className="mt-6">
-        <img
-          src="/blog/union-budget-2026-27/pib-key-numbers.png"
-          alt="Key budget numbers table in ₹ crore: Revenue Receipts, Capital Receipts, Total Receipts, Total Expenditure, Effective Capital Expenditure, Revenue Deficit, Effective Revenue Deficit, Fiscal Deficit, and Primary Deficit, compared across 2024-25 Actuals, 2025-26 Budget Estimates, 2025-26 Revised Estimates, and 2026-27 Budget Estimates."
-          className="w-full h-auto rounded-lg border border-[color:var(--border)]"
-        />
-        <figcaption className={figCaption}>
-          Fiscal Position of India.
-          <br />
-          Source:{" "}
-          <a
-            href="https://govtbudget.com/budget-analysis/fiscal-deficit"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline-fade text-[color:var(--text-muted)] hover:text-[color:var(--accent)]"
-          >
-            govtbudget.com/budget-analysis/fiscal-deficit
-          </a>
-        </figcaption>
-      </figure>
-
-      <h3 className={h3}>India's Fiscal Consolidation Path</h3>
-
-      <p className={p}>
-        India's fiscal discipline really comes down to one law: the{" "}
+      <DataTable
+        caption="Union Budget 2026-27 key numbers, in ₹ crore"
+        columns={keyNumbersTable.columns}
+        rows={keyNumbersTable.rows}
+      />
+      <p className="mt-2 text-[13px] text-[color:var(--text-faint)]">
+        Source:{" "}
         <a
-          href="https://govtbudget.com/budget-glossary/frbm-act"
+          href="https://www.pib.gov.in/PressReleasePage.aspx?PRID=2270740&reg=3&lang=1"
           target="_blank"
           rel="noopener noreferrer"
-          className="underline-fade text-[color:var(--text)] hover:text-[color:var(--accent)]"
+          className="underline-fade hover:text-[color:var(--accent)]"
         >
-          Fiscal Responsibility and Budget Management (FRBM) Act
+          pib.gov.in
         </a>
-        . Parliament passed it in 2003 to force the government to stick to a
-        rulebook. The original goal was simple: bring the fiscal deficit
-        down to 3% of GDP, and get rid of the revenue deficit completely.
+        , via{" "}
+        <a
+          href="https://govtbudget.com/budget-analysis/fiscal-deficit"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline-fade hover:text-[color:var(--accent)]"
+        >
+          govtbudget.com
+        </a>
       </p>
 
+      <h3 className={h3}>Capital Expenditure</h3>
       <p className={p}>
-        India nearly got there. By 2007-08, the fiscal deficit had fallen to
-        2.5% of GDP — under the 3% target. Then the 2008 global financial
-        crisis hit, and the government opened up spending again, rightly.
-        The deficit jumped back up to 6.5% in 2009-10. It took a slow, steady
-        grind through the early 2010s to bring it back down, and by 2018-19
-        India was at 3.4%.
+        Public capital spending has grown from about ₹2 lakh crore in
+        FY2014–15 to ₹12.2 lakh crore in FY2026–27. Big programmes like
+        Sagarmala, Bharatmala, PM GatiShakti, PMAY, Jal Jeevan Mission, PM
+        Ujjwala Yojana, and UDAN have all expanded access to infrastructure.
       </p>
-
-      <p className={p}>
-        COVID knocked the plan off track again. The deficit shot up from
-        3.4% in 2018-19 to 9.2% within just two years. Back in 2017, the NK
-        Singh Committee had already recommended building an escape clause
-        into the FRBM framework for extraordinary situations — and the
-        pandemic was exactly that kind of situation.
-      </p>
-
-      <p className={p}>
-        The current government now has a new plan: cut the deficit by about
-        0.5–0.7 percentage points every year. The numbers so far back that
-        up — 6.4% in 2022-23, 5.8% in 2023-24, 4.8% in 2025-26, and 4.4% in
-        2026-27. At this rate, India could hit the 3% target by 2028-29 or
-        2029-30 — assuming nothing unexpected happens along the way.
-      </p>
-
-      {/* ---------------- Capex ---------------- */}
-      <h4 className={h4}>Impact</h4>
-      <h2 className={h2}>Capital Expenditure</h2>
-
-      <figure className="mt-2 mb-6">
-        <img
-          src="/blog/union-budget-2026-27/fiscal-deficit-citizens.png"
-          alt="Explainer card titled 'Why Fiscal Deficit Matters for Ordinary Citizens', covering three effects: Interest Rates (government borrowing pushes up loan rates), Inflation Pressure (large deficits accommodated by the RBI can push inflation), and Future Tax Burden (India spends over ₹12 lakh crore annually on interest payments)."
-          className="w-full h-auto rounded-lg border border-[color:var(--border)]"
-        />
-        <figcaption className={figCaption}>
-          Capex.
-          <br />
-          Source:{" "}
-          <a
-            href="https://www.pib.gov.in/PressReleasePage.aspx?PRID=2270740&reg=3&lang=1"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline-fade text-[color:var(--text-muted)] hover:text-[color:var(--accent)]"
-          >
-            pib.gov.in — PRID 2270740
-          </a>
-        </figcaption>
-      </figure>
-
-      <p className={p}>
-        Infrastructure shapes everyday life in India. Roads, railways,
-        airports, digital networks, housing, water supply, and clean energy
-        have all made essential services easier to reach. They've also
-        changed how people travel, get online, and take part in the economy.
-        Since 2014, infrastructure spending has shifted toward scale —
-        building bigger, more connected, longer-lasting systems instead of
-        one-off projects.
-      </p>
-
-      <p className={p}>
-        One of the biggest shifts has been in the planning itself — treating
-        infrastructure as one connected system instead of separate,
-        disconnected projects. Public capital spending has grown from about
-        ₹2 lakh crore in FY2014–15 to ₹12.2 lakh crore in FY2026–27. Big
-        programmes like Sagarmala, Bharatmala, PM GatiShakti, PMAY, Jal
-        Jeevan Mission, PM Ujjwala Yojana, and UDAN have all expanded access
-        to infrastructure, and tied that growth to household welfare, jobs,
-        and regional development.
-      </p>
-
       <ul className={ul}>
         <li>₹32,000 crore in 2014–15 grew to ₹2.78 lakh crore in FY2026–27 — almost a nine-fold jump.</li>
-        <li>The number of operating airports rose from 74 in 2014 to 165 in 2026.</li>
+        <li>Operating airports rose from 74 in 2014 to 165 in 2026.</li>
         <li>
           India now has the world's second-largest road network, at 63.73
           lakh km. National highways alone grew by about 61%, from 91,287 km
@@ -213,52 +158,7 @@ export default function UnionBudgetPartAPage() {
         </li>
       </ul>
 
-      <p className={p}>
-        Further reading —{" "}
-        <a
-          href="https://www.hdfc.bank.in/blogs/demat-account/what-is-capital-expenditure"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="underline-fade text-[color:var(--text)] hover:text-[color:var(--accent)]"
-        >
-          what is capital expenditure
-        </a>{" "}
-        ·{" "}
-        <a
-          href="https://forumias.com/blog/answered-do-you-agree-that-capex-spending-provides-a-big-boost-to-investment-activity-and-supports-economic-growth-give-reasons-in-support-of-your-answer/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="underline-fade text-[color:var(--text)] hover:text-[color:var(--accent)]"
-        >
-          does capex spending boost investment activity?
-        </a>
-      </p>
-
-      <p className={p}>But capital expenditure isn't risk-free. Here's what can go wrong:</p>
-
-      <ul className={ul}>
-        <li>Using capex to cover losses at public enterprises doesn't actually help the economy.</li>
-        <li>If capex skips important areas like health and education, its benefits stay limited.</li>
-        <li>
-          Spending heavily on capex while running a high fiscal deficit
-          brings its own risks — higher inflation, a bigger current account
-          deficit, and pressure on financial stability, all of which can
-          shake investor confidence.
-        </li>
-        <li>Capex only works well if it's backed by a regulatory environment that actually supports it.</li>
-        <li>It has to be carried out well at every level — central, state, and local — or the outcome suffers.</li>
-      </ul>
-
-      <p className={p}>
-        Capex is a powerful tool for driving growth and pulling in
-        investment. But the money has to be well spent and backed by other
-        policies — otherwise it won't deliver what it's supposed to.
-      </p>
-
-      {/* ---------------- Manufacturing ---------------- */}
-      <h2 className={h2}>Manufacturing</h2>
-      <h4 className={h4}>Economic push</h4>
-
+      <h3 className={h3}>Manufacturing</h3>
       <p className={p}>
         India wants manufacturing to do three things: create millions of
         jobs, move workers out of low-productivity farming into
@@ -269,47 +169,10 @@ export default function UnionBudgetPartAPage() {
         Source: Business Today
       </p>
 
-      <figure className="mt-2 mb-6">
-        <img
-          src="/blog/union-budget-2026-27/manufacturing-pmi.png"
-          alt="India Manufacturing PMI, 3-year line chart from Trading Economics, ranging roughly between 53 and 59.5 points, trending down toward 53 at the latest reading shown."
-          className="w-full h-auto rounded-lg border border-[color:var(--border)]"
-        />
-        <figcaption className={figCaption}>
-          Actual data.
-          <br />
-          Source:{" "}
-          <a
-            href="https://tradingeconomics.com/india/manufacturing-pmi"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline-fade text-[color:var(--text-muted)] hover:text-[color:var(--accent)]"
-          >
-            tradingeconomics.com/india/manufacturing-pmi
-          </a>
-        </figcaption>
-      </figure>
-
-      <h4 className={h4}>Challenges</h4>
-      <p className={p}>
-        Key challenges facing Indian manufacturing, per{" "}
-        <a
-          href="https://www.dnb.co.in/blog/key-challenges-in-indian-manufacturing-industries"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="underline-fade text-[color:var(--text)] hover:text-[color:var(--accent)]"
-        >
-          D&amp;B India
-        </a>
-        : a strict regulatory environment, global economic headwinds, low
-        R&amp;D spending, and a shortage of skilled workers.
-      </p>
-
-      {/* ---------------- First Kartavya ---------------- */}
-      <h2 className={h2}>First Kartavya — Accelerate and Sustain Economic Growth</h2>
+      <h3 className={h3}>First Kartavya — Accelerate and Sustain Economic Growth</h3>
       <p className={p}>Six interventions, under this Kartavya:</p>
 
-      <h3 className={h3}>1. Scaling up manufacturing in 7 strategic and frontier sectors</h3>
+      <h4 className={h4}>1. Scaling up manufacturing in 7 strategic and frontier sectors</h4>
       <ul className={ul}>
         <li>Biopharma SHAKTI (Strategy for Healthcare Advancement through Knowledge, Technology and Innovation): a new plan with ₹10,000 crore over 5 years to turn India into a global hub for biopharma manufacturing.</li>
         <li>A new biopharma-focused network: 3 brand-new National Institutes of Pharmaceutical Education and Research (NIPER), plus upgrades to 7 existing ones.</li>
@@ -334,19 +197,19 @@ export default function UnionBudgetPartAPage() {
         <li>A new initiative will help these industries connect to global markets, build their branding, and get support with training, skilling, and quality of production.</li>
       </ul>
 
-      <h3 className={h3}>2. Rejuvenating legacy industrial sectors</h3>
+      <h4 className={h4}>2. Rejuvenating legacy industrial sectors</h4>
       <ul className={ul}>
         <li>A new scheme will revive 200 older industrial clusters, upgrading their infrastructure and technology to make them more cost-competitive and efficient.</li>
       </ul>
 
-      <h3 className={h3}>3. Creating "Champion SMEs" and supporting micro enterprises</h3>
+      <h4 className={h4}>3. Creating "Champion SMEs" and supporting micro enterprises</h4>
       <ul className={ul}>
         <li>A new ₹10,000 crore SME Growth Fund will back small businesses with the potential to grow into industry leaders, chosen against set criteria.</li>
         <li>The Self-Reliant India Fund gets another ₹2,000 crore, to keep helping micro enterprises access risk capital.</li>
         <li>Institutes like ICAI, ICSI, and ICMAI will design short, hands-on courses to train a new group of "Corporate Mitras" — especially in smaller towns (Tier-II and Tier-III).</li>
       </ul>
 
-      <h3 className={h3}>4. Delivering a powerful push to infrastructure</h3>
+      <h4 className={h4}>4. Delivering a powerful push to infrastructure</h4>
       <ul className={ul}>
         <li>Public capital spending will rise to ₹12.2 lakh crore in FY2026-27.</li>
         <li>A new Infrastructure Risk Guarantee Fund will make private developers more confident about taking on infrastructure projects.</li>
@@ -373,12 +236,12 @@ export default function UnionBudgetPartAPage() {
         </li>
       </ul>
 
-      <h3 className={h3}>5. Ensuring long-term energy security and stability</h3>
+      <h4 className={h4}>5. Ensuring long-term energy security and stability</h4>
       <ul className={ul}>
         <li>₹20,000 crore over 5 years will go toward Carbon Capture Utilization and Storage (CCUS) technology.</li>
       </ul>
 
-      <h3 className={h3}>6. Developing City Economic Regions</h3>
+      <h4 className={h4}>6. Developing City Economic Regions</h4>
       <ul className={ul}>
         <li>Each City Economic Region (CER) gets ₹5,000 crore over 5 years, distributed through a competitive, results-based funding model.</li>
         <li>
@@ -403,8 +266,7 @@ export default function UnionBudgetPartAPage() {
         <li>Cities that issue a municipal bond worth more than ₹1,000 crore in one go will get a ₹100 crore incentive — meant to encourage bigger, higher-value bonds.</li>
       </ul>
 
-      {/* ---------------- Second Kartavya ---------------- */}
-      <h2 className={h2}>Second Kartavya — Fulfil Aspirations and Build Capacity of People</h2>
+      <h3 className={h3}>Second Kartavya — Fulfil Aspirations and Build Capacity of People</h3>
       <ul className={ul}>
         <li>A new High-Powered "Education to Employment and Enterprise" Standing Committee will recommend how to make the services sector a bigger driver of Viksit Bharat.</li>
       </ul>
@@ -471,11 +333,10 @@ export default function UnionBudgetPartAPage() {
         <li>The Khelo India Mission will guide a decade-long transformation of India's sports sector.</li>
       </ul>
 
-      {/* ---------------- Third Kartavya ---------------- */}
-      <h2 className={h2}>Third Kartavya — Sabka Sath, Sabka Vikas</h2>
+      <h3 className={h3}>Third Kartavya — Sabka Sath, Sabka Vikas</h3>
       <p className={p}>Focuses on four areas:</p>
 
-      <h3 className={h3}>1. Increasing Farmer Incomes</h3>
+      <h4 className={h4}>1. Increasing Farmer Incomes</h4>
       <ul className={ul}>
         <li>A new push will jointly develop 500 reservoirs and Amrit Sarovars.</li>
       </ul>
@@ -491,12 +352,12 @@ export default function UnionBudgetPartAPage() {
         <li>Bharat-VISTAAR is a new multilingual AI tool that brings the AgriStack portals and ICAR's farming guidance together into one AI-powered system.</li>
       </ul>
 
-      <h3 className={h3}>2. Empowering Divyangjan</h3>
+      <h4 className={h4}>2. Empowering Divyangjan</h4>
       <ul className={ul}>
         <li>The Divyangjan Kaushal Yojana will train persons with disabilities for task-based roles in IT, AVGC, hospitality, and food and beverage sectors.</li>
       </ul>
 
-      <h3 className={h3}>3. Commitment to Mental Health and Trauma Care</h3>
+      <h4 className={h4}>3. Commitment to Mental Health and Trauma Care</h4>
       <ul className={ul}>
         <li>
           A new NIMHANS-2 will be set up in north India.
@@ -506,7 +367,7 @@ export default function UnionBudgetPartAPage() {
         </li>
       </ul>
 
-      <h3 className={h3}>4. Focus on the Purvodaya States and the North-Eastern Region</h3>
+      <h4 className={h4}>4. Focus on the Purvodaya States and the North-Eastern Region</h4>
       <ul className={ul}>
         <li>
           A new East Coast Industrial Corridor will be developed, anchored around a well-connected node at Durgapur, alongside 5 new tourism destinations across the 5 Purvodaya states and 4,000 new e-buses.
@@ -516,11 +377,110 @@ export default function UnionBudgetPartAPage() {
         </li>
       </ul>
 
-      {/* ---------------- 16th Finance Commission ---------------- */}
-      <h2 className={h2}>16th Finance Commission</h2>
+      <h3 className={h3}>16th Finance Commission</h3>
       <ul className={ul}>
         <li>₹1.4 lakh crore was given to the states for FY2026-27 as Finance Commission Grants, following the 16th Finance Commission's recommendations.</li>
       </ul>
+
+      {/* ================================================================ */}
+      {/* PART 2 — WHAT WE OBSERVED                                        */}
+      {/* ================================================================ */}
+      <h2 className={h2}>Part 2 — What We Observed</h2>
+
+      <h3 className={h3}>India's Fiscal Consolidation Path</h3>
+      <p className={p}>
+        India's fiscal discipline really comes down to one law: the{" "}
+        <a
+          href="https://govtbudget.com/budget-glossary/frbm-act"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline-fade text-[color:var(--text)] hover:text-[color:var(--accent)]"
+        >
+          Fiscal Responsibility and Budget Management (FRBM) Act
+        </a>
+        . Parliament passed it in 2003 to force the government to stick to a
+        rulebook. The original goal was simple: bring the fiscal deficit
+        down to 3% of GDP, and get rid of the revenue deficit completely.
+      </p>
+      <p className={p}>
+        India nearly got there. By 2007-08, the fiscal deficit had fallen to
+        2.5% of GDP — under the 3% target. Then the 2008 global financial
+        crisis hit, and the government opened up spending again, rightly.
+        The deficit jumped back up to 6.5% in 2009-10. It took a slow, steady
+        grind through the early 2010s to bring it back down, and by 2018-19
+        India was at 3.4%.
+      </p>
+      <p className={p}>
+        COVID knocked the plan off track again. The deficit shot up from
+        3.4% in 2018-19 to 9.2% within just two years. Back in 2017, the NK
+        Singh Committee had already recommended building an escape clause
+        into the FRBM framework for extraordinary situations — and the
+        pandemic was exactly that kind of situation.
+      </p>
+      <p className={p}>
+        The current government now has a new plan: cut the deficit by about
+        0.5–0.7 percentage points every year. The numbers so far back that
+        up — 6.4% in 2022-23, 5.8% in 2023-24, 4.8% in 2025-26, and 4.4% in
+        2026-27. At this rate, India could hit the 3% target by 2028-29 or
+        2029-30 — assuming nothing unexpected happens along the way.
+      </p>
+
+      <h3 className={h3}>Capex — Risks and Caveats</h3>
+      <p className={p}>Capital expenditure isn't risk-free. Here's what can go wrong:</p>
+      <ul className={ul}>
+        <li>Using capex to cover losses at public enterprises doesn't actually help the economy.</li>
+        <li>If capex skips important areas like health and education, its benefits stay limited.</li>
+        <li>
+          Spending heavily on capex while running a high fiscal deficit
+          brings its own risks — higher inflation, a bigger current account
+          deficit, and pressure on financial stability, all of which can
+          shake investor confidence.
+        </li>
+        <li>Capex only works well if it's backed by a regulatory environment that actually supports it.</li>
+        <li>It has to be carried out well at every level — central, state, and local — or the outcome suffers.</li>
+      </ul>
+      <p className={p}>
+        Capex is a powerful tool for driving growth and pulling in
+        investment. But the money has to be well spent and backed by other
+        policies — otherwise it won't deliver what it's supposed to.
+      </p>
+      <p className={p}>
+        Further reading —{" "}
+        <a
+          href="https://www.hdfc.bank.in/blogs/demat-account/what-is-capital-expenditure"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline-fade text-[color:var(--text)] hover:text-[color:var(--accent)]"
+        >
+          what is capital expenditure
+        </a>{" "}
+        ·{" "}
+        <a
+          href="https://forumias.com/blog/answered-do-you-agree-that-capex-spending-provides-a-big-boost-to-investment-activity-and-supports-economic-growth-give-reasons-in-support-of-your-answer/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline-fade text-[color:var(--text)] hover:text-[color:var(--accent)]"
+        >
+          does capex spending boost investment activity?
+        </a>
+      </p>
+
+      <h3 className={h3}>Manufacturing — Challenges</h3>
+      <p className={p}>
+        Key challenges facing Indian manufacturing, per{" "}
+        <a
+          href="https://www.dnb.co.in/blog/key-challenges-in-indian-manufacturing-industries"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline-fade text-[color:var(--text)] hover:text-[color:var(--accent)]"
+        >
+          D&amp;B India
+        </a>
+        : a strict regulatory environment, global economic headwinds, low
+        R&amp;D spending, and a shortage of skilled workers. India's
+        Manufacturing PMI has been trending down over the past few readings —
+        see the source below for the live chart.
+      </p>
 
       {/* ---------------- Sources ---------------- */}
       <div className="mt-16 pt-10 border-t border-[color:var(--border)]">
@@ -544,6 +504,19 @@ export default function UnionBudgetPartAPage() {
             </li>
           ))}
         </ul>
+      </div>
+
+      {/* ---------------- AI usage note ---------------- */}
+      <div className="mt-10 rounded-lg border-l-[3px] border-[color:var(--accent)] bg-[color:var(--accent-soft)] px-5 py-4">
+        <p className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-[color:var(--accent)] mb-1.5">
+          A note on how this was made
+        </p>
+        <p className="text-[14px] leading-relaxed text-[color:var(--text)]">
+          The research, figures, and questions above are my own notes on the
+          budget speech. AI (Claude) was used to structure this write-up and
+          rewrite my notes in simpler language — it did not add its own
+          facts, analysis, or opinions to the content.
+        </p>
       </div>
     </Container>
   );
