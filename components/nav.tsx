@@ -8,7 +8,7 @@ import Container from "@/components/ui/container";
 const links = [
   { href: "/about", label: "About" },
   { href: "/my-work", label: "My Work" },
-  { href: "/blog", label: "Blog" },
+  { href: "/digest", label: "Digest" },
   { href: "/newsletter", label: "Newsletter" },
   { href: "/contact", label: "Contact" },
 ];

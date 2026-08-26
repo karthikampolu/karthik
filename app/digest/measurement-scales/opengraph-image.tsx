@@ -6,7 +6,7 @@ export const contentType = ogImageContentType;
 
 export default function Image() {
   return buildOgImage({
-    eyebrow: "AK — Blog",
+    eyebrow: "AK — Digest",
     title: "The Four Levels of Measurement",
     description:
       "Nominal, ordinal, interval, and ratio scales, each explained with a real government dataset.",

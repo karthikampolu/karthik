@@ -1,4 +1,4 @@
-export type BlogPost = {
+export type DigestEntry = {
   slug: string;
   title: string;
   description: string;
@@ -6,7 +6,7 @@ export type BlogPost = {
   readingTime: string;
 };
 
-export const blogPosts: BlogPost[] = [
+export const digestEntries: DigestEntry[] = [
   {
     slug: "measurement-scales",
     title: "The Four Levels of Measurement",
@@ -19,12 +19,19 @@ export const blogPosts: BlogPost[] = [
     slug: "union-budget-2026-27-part-a",
     title: "Union Budget 2026–27 — Part A",
     description:
-      "Notes on capital expenditure, fiscal consolidation, and the three Kartavyas from Part A of the Union Budget 2026-27 speech.",
+      "A collection of information on capital expenditure, fiscal consolidation, and the three Kartavyas from Part A of the Union Budget 2026-27 speech.",
     date: "2026-08-26",
-    readingTime: "14 min read",
+    readingTime: "10 min read",
   },
 ];
 
-export function getBlogPost(slug: string) {
-  return blogPosts.find((p) => p.slug === slug);
+/** Newest first. */
+export function getDigestEntries() {
+  return [...digestEntries].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+}
+
+export function getDigestEntry(slug: string) {
+  return digestEntries.find((p) => p.slug === slug);
 }

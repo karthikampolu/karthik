@@ -6,9 +6,9 @@ export const contentType = ogImageContentType;
 
 export default function Image() {
   return buildOgImage({
-    eyebrow: "AK — Blog",
+    eyebrow: "AK — Digest",
     title: "Union Budget 2026–27 — Part A",
     description:
-      "Notes on capital expenditure, fiscal consolidation, and the three Kartavyas.",
+      "A collection of information on capital expenditure, fiscal consolidation, and the three Kartavyas.",
   });
 }

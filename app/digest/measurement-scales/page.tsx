@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function MeasurementScalesPage() {
   return (
     <Container className="max-w-3xl py-20 md:py-28">
-      <Eyebrow>Blog</Eyebrow>
+      <Eyebrow>Digest</Eyebrow>
       <h1 className="font-display text-4xl md:text-5xl text-[color:var(--text)] leading-tight mb-6">
         The Four Levels of Measurement
       </h1>
