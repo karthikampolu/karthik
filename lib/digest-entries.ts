@@ -23,6 +23,14 @@ export const digestEntries: DigestEntry[] = [
     date: "2026-08-26",
     readingTime: "10 min read",
   },
+  {
+    slug: "preparing-a-research-document",
+    title: "Preparing a Research or Project Document",
+    description:
+      "A simple step-by-step guide to writing a research, project, or class-assessment document that matches a standard marking rubric — picking a question, data, statistics, charts, references, and using AI the right way.",
+    date: "2026-08-28",
+    readingTime: "15 min read",
+  },
 ];
 
 /** Newest first. */
