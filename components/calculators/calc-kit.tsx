@@ -436,10 +436,7 @@ export function Calc({
   children: React.ReactNode;
 }) {
   return (
-    <section
-      id={id}
-      className="scroll-mt-24 border-t border-[color:var(--border)] pt-12 mt-16 first:border-t-0 first:mt-10 first:pt-0"
-    >
+    <section id={id} className="scroll-mt-24">
       <p className="font-mono text-[11px] tracking-[0.14em] text-[color:var(--text-faint)] mb-2">
         {index} / {tag}
       </p>

@@ -17,25 +17,24 @@ export const metadata: Metadata = {
 
 export default function FinancialCalculatorsPage() {
   return (
-    <Container className="max-w-3xl py-20 md:py-28">
+    <Container className="max-w-6xl py-20 md:py-28">
       <Eyebrow>Digest · Tools</Eyebrow>
       <h1 className="font-display text-4xl md:text-5xl text-[color:var(--text)] leading-tight mb-4">
         Financial Calculators
       </h1>
       <p className="text-[17px] leading-relaxed text-[color:var(--text-muted)] max-w-2xl">
-        A dashboard of 20 working calculators, grouped into four areas &mdash;
-        personal finance, loans &amp; credit, investing &amp; valuation, and
-        corporate &amp; projects. So it runs from &ldquo;what will my SIP be
-        worth&rdquo; to NPV, IRR, WACC, and bond pricing. Drag a slider or type a
-        number and the answer updates live. Every calculator has an{" "}
+        A dashboard of 20 working calculators. Pick one from the panel on the
+        left &mdash; they run from &ldquo;what will my SIP be worth&rdquo; through
+        NPV, IRR, WACC, and bond pricing, grouped into personal finance, loans,
+        valuation, and corporate projects. Drag a slider or type a number and the
+        answer updates live. Every calculator has a{" "}
         <span className="text-[color:var(--text)]">
           &ldquo;How it&rsquo;s calculated&rdquo;
         </span>{" "}
-        bar that opens to show what goes in, the exact formula, and a plain-words
-        walk-through of the method.
+        panel with what goes in, the exact formula, and a plain-words method.
       </p>
 
-      <div className="mt-6 rounded-lg border-l-[3px] border-[color:var(--accent)] bg-[color:var(--accent-soft)] px-5 py-4">
+      <div className="mt-6 max-w-2xl rounded-lg border-l-[3px] border-[color:var(--accent)] bg-[color:var(--accent-soft)] px-5 py-4">
         <p className="text-[13.5px] leading-relaxed text-[color:var(--text)]">
           These are estimates for learning and rough planning. They assume
           steady rates and ignore taxes, fees, and the ups and downs of real

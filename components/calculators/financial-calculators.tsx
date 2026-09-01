@@ -21,144 +21,178 @@ import {
 /*  Dashboard index                                                    */
 /* ------------------------------------------------------------------ */
 
-const categories = [
+type Item = { n: string; id: string; name: string; Component: React.ComponentType };
+
+const groups: { label: string; items: Item[] }[] = [
   {
-    id: "cat-personal",
     label: "Personal finance",
     items: [
-      { n: "01", id: "sip", name: "SIP future value", one: "What a fixed monthly investment grows to." },
-      { n: "02", id: "lumpsum", name: "Lump-sum compounding", one: "What a one-time amount grows to." },
-      { n: "03", id: "goal", name: "Goal planner", one: "The monthly saving a target needs." },
-      { n: "04", id: "retirement", name: "Retirement planner", one: "Corpus and monthly saving for retirement." },
-      { n: "05", id: "swp", name: "Withdrawal plan (SWP)", one: "How long a corpus lasts while you draw from it." },
-      { n: "06", id: "cagr", name: "CAGR", one: "The yearly growth rate between two values." },
-      { n: "07", id: "inflation", name: "Inflation / buying power", one: "How prices and money change over time." },
+      { n: "01", id: "sip", name: "SIP future value", Component: SIP },
+      { n: "02", id: "lumpsum", name: "Lump-sum compounding", Component: LumpSum },
+      { n: "03", id: "goal", name: "Goal planner", Component: Goal },
+      { n: "04", id: "retirement", name: "Retirement planner", Component: Retirement },
+      { n: "05", id: "swp", name: "Withdrawal plan (SWP)", Component: SWP },
+      { n: "06", id: "cagr", name: "CAGR", Component: CAGR },
+      { n: "07", id: "inflation", name: "Inflation / buying power", Component: Inflation },
     ],
   },
   {
-    id: "cat-loans",
     label: "Loans & credit",
     items: [
-      { n: "08", id: "emi", name: "Loan EMI", one: "The monthly instalment on a loan." },
-      { n: "09", id: "affordability", name: "Loan affordability", one: "The loan an EMI budget can support." },
-      { n: "10", id: "ear", name: "Nominal vs effective rate", one: "The real yearly rate after compounding." },
+      { n: "08", id: "emi", name: "Loan EMI", Component: EMI },
+      { n: "09", id: "affordability", name: "Loan affordability", Component: Affordability },
+      { n: "10", id: "ear", name: "Nominal vs effective rate", Component: EAR },
     ],
   },
   {
-    id: "cat-valuation",
     label: "Investing & valuation",
     items: [
-      { n: "11", id: "capm", name: "Cost of equity (CAPM)", one: "The return shareholders expect for the risk." },
-      { n: "12", id: "wacc", name: "WACC", one: "A firm's blended cost of capital." },
-      { n: "13", id: "ddm", name: "Dividend discount value", one: "Share value from growing dividends." },
-      { n: "14", id: "bond", name: "Bond price", one: "What a bond is worth at a given yield." },
+      { n: "11", id: "capm", name: "Cost of equity (CAPM)", Component: CAPM },
+      { n: "12", id: "wacc", name: "WACC", Component: WACC },
+      { n: "13", id: "ddm", name: "Dividend discount value", Component: DDM },
+      { n: "14", id: "bond", name: "Bond price", Component: Bond },
     ],
   },
   {
-    id: "cat-corporate",
     label: "Corporate & projects",
     items: [
-      { n: "15", id: "npv", name: "NPV", one: "Whether a project adds value, in today's money." },
-      { n: "16", id: "irr", name: "IRR", one: "A project's own break-even return rate." },
-      { n: "17", id: "payback", name: "Payback period", one: "How long until a project repays its cost." },
-      { n: "18", id: "breakeven", name: "Break-even analysis", one: "The sales needed to cover all costs." },
-      { n: "19", id: "eoq", name: "Economic order quantity", one: "The order size that minimises inventory cost." },
-      { n: "20", id: "ccc", name: "Cash conversion cycle", one: "Days cash is tied up in operations." },
+      { n: "15", id: "npv", name: "NPV", Component: NPV },
+      { n: "16", id: "irr", name: "IRR", Component: IRR },
+      { n: "17", id: "payback", name: "Payback period", Component: Payback },
+      { n: "18", id: "breakeven", name: "Break-even analysis", Component: BreakEven },
+      { n: "19", id: "eoq", name: "Economic order quantity", Component: EOQ },
+      { n: "20", id: "ccc", name: "Cash conversion cycle", Component: CCC },
     ],
   },
 ];
 
+const flat = groups.flatMap((g) => g.items.map((it) => ({ ...it, group: g.label })));
+
 /* ================================================================== */
 
 export default function FinancialCalculators() {
-  return (
-    <div>
-      {/* ---------------- Category nav ---------------- */}
-      <div className="mt-8 -mx-4 sm:mx-0 overflow-x-auto">
-        <div className="flex gap-2 px-4 sm:px-0">
-          {categories.map((c) => (
-            <a
-              key={c.id}
-              href={`#${c.id}`}
-              className="whitespace-nowrap rounded-full border border-[color:var(--border-strong)] px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-[color:var(--text-muted)] hover:border-[color:var(--accent)] hover:text-[color:var(--accent)] transition-colors"
-            >
-              {c.label}
-            </a>
-          ))}
-        </div>
-      </div>
+  const [selected, setSelected] = useState("sip");
+  const current = flat.find((f) => f.id === selected) ?? flat[0];
+  const idx = flat.findIndex((f) => f.id === current.id);
+  const prev = flat[idx - 1];
+  const next = flat[idx + 1];
+  const Active = current.Component;
 
-      {/* ---------------- Grouped hub ---------------- */}
-      <div className="mt-8 space-y-8">
-        {categories.map((c) => (
-          <div key={c.id}>
-            <p className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-[color:var(--text-faint)] mb-3">
-              {c.label}
+  return (
+    <div className="mt-10 lg:grid lg:grid-cols-[15.5rem_1fr] lg:gap-10">
+      {/* ---------------- Sidebar (desktop) ---------------- */}
+      <nav
+        aria-label="Calculators"
+        className="hidden lg:block lg:sticky lg:top-24 lg:self-start lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto pr-1"
+      >
+        {groups.map((g) => (
+          <div key={g.label} className="mb-6">
+            <p className="px-3 mb-2 font-mono text-[10px] uppercase tracking-[0.16em] text-[color:var(--text-faint)]">
+              {g.label}
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {c.items.map((h) => (
-                <a
-                  key={h.id}
-                  href={`#${h.id}`}
-                  className="group rounded-xl border border-[color:var(--border)] bg-[color:var(--surface)] p-4 transition-colors hover:border-[color:var(--accent)]"
-                >
-                  <div className="flex items-baseline gap-2 mb-1">
-                    <span className="font-mono text-[11px] text-[color:var(--accent)]">{h.n}</span>
-                    <span className="font-display text-[16px] text-[color:var(--text)] group-hover:underline">
-                      {h.name}
-                    </span>
-                  </div>
-                  <p className="text-[13px] leading-snug text-[color:var(--text-faint)]">{h.one}</p>
-                </a>
-              ))}
-            </div>
+            <ul className="space-y-0.5">
+              {g.items.map((it) => {
+                const active = it.id === selected;
+                return (
+                  <li key={it.id}>
+                    <button
+                      type="button"
+                      onClick={() => setSelected(it.id)}
+                      aria-current={active ? "page" : undefined}
+                      className={`flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-[13.5px] transition-colors ${
+                        active
+                          ? "bg-[color:var(--accent-soft)] text-[color:var(--text)]"
+                          : "text-[color:var(--text-muted)] hover:bg-[color:var(--surface)] hover:text-[color:var(--text)]"
+                      }`}
+                    >
+                      <span
+                        className={`font-mono text-[10px] ${
+                          active ? "text-[color:var(--accent)]" : "text-[color:var(--text-faint)]"
+                        }`}
+                      >
+                        {it.n}
+                      </span>
+                      <span className={active ? "font-medium" : ""}>{it.name}</span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
           </div>
         ))}
+      </nav>
+
+      {/* ---------------- Main panel ---------------- */}
+      <div className="min-w-0">
+        {/* Mobile / tablet selector */}
+        <div className="lg:hidden mb-8">
+          <label
+            htmlFor="calc-select"
+            className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.16em] text-[color:var(--text-faint)]"
+          >
+            Choose a calculator
+          </label>
+          <select
+            id="calc-select"
+            value={selected}
+            onChange={(e) => setSelected(e.target.value)}
+            className="w-full rounded-lg border border-[color:var(--border-strong)] bg-[color:var(--bg)] px-3 py-2.5 text-[14px] text-[color:var(--text)]"
+          >
+            {groups.map((g) => (
+              <optgroup key={g.label} label={g.label}>
+                {g.items.map((it) => (
+                  <option key={it.id} value={it.id}>
+                    {it.n} · {it.name}
+                  </option>
+                ))}
+              </optgroup>
+            ))}
+          </select>
+        </div>
+
+        <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.16em] text-[color:var(--text-faint)]">
+          {current.group}
+        </p>
+
+        <Active key={current.id} />
+
+        {/* prev / next */}
+        <div className="mt-16 flex items-stretch justify-between gap-4 border-t border-[color:var(--border)] pt-6">
+          {prev ? (
+            <button
+              type="button"
+              onClick={() => setSelected(prev.id)}
+              className="group text-left"
+            >
+              <span className="block font-mono text-[10px] uppercase tracking-[0.14em] text-[color:var(--text-faint)]">
+                ← Previous
+              </span>
+              <span className="text-[14px] text-[color:var(--text-muted)] group-hover:text-[color:var(--accent)]">
+                {prev.name}
+              </span>
+            </button>
+          ) : (
+            <span />
+          )}
+          {next ? (
+            <button
+              type="button"
+              onClick={() => setSelected(next.id)}
+              className="group text-right"
+            >
+              <span className="block font-mono text-[10px] uppercase tracking-[0.14em] text-[color:var(--text-faint)]">
+                Next →
+              </span>
+              <span className="text-[14px] text-[color:var(--text-muted)] group-hover:text-[color:var(--accent)]">
+                {next.name}
+              </span>
+            </button>
+          ) : (
+            <span />
+          )}
+        </div>
       </div>
-
-      {/* ================= PERSONAL FINANCE ================= */}
-      <CategoryHeading id="cat-personal" label="Personal finance" />
-      <SIP />
-      <LumpSum />
-      <Goal />
-      <Retirement />
-      <SWP />
-      <CAGR />
-      <Inflation />
-
-      {/* ================= LOANS & CREDIT ================= */}
-      <CategoryHeading id="cat-loans" label="Loans & credit" />
-      <EMI />
-      <Affordability />
-      <EAR />
-
-      {/* ================= INVESTING & VALUATION ================= */}
-      <CategoryHeading id="cat-valuation" label="Investing & valuation" />
-      <CAPM />
-      <WACC />
-      <DDM />
-      <Bond />
-
-      {/* ================= CORPORATE & PROJECTS ================= */}
-      <CategoryHeading id="cat-corporate" label="Corporate & projects" />
-      <NPV />
-      <IRR />
-      <Payback />
-      <BreakEven />
-      <EOQ />
-      <CCC />
     </div>
-  );
-}
-
-function CategoryHeading({ id, label }: { id: string; label: string }) {
-  return (
-    <h2
-      id={id}
-      className="scroll-mt-24 font-display text-3xl md:text-4xl text-[color:var(--text)] mt-24 mb-2 leading-snug border-t-2 border-[color:var(--accent)] pt-8"
-    >
-      {label}
-    </h2>
   );
 }
 
