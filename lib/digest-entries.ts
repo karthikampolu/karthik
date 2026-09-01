@@ -24,6 +24,14 @@ export const digestEntries: DigestEntry[] = [
     readingTime: "10 min read",
   },
   {
+    slug: "financial-calculators",
+    title: "Financial Calculators",
+    description:
+      "A hub of working calculators — SIP, lump-sum compounding, loan EMI, goal planning, CAGR, and inflation — each showing what it does, what goes in, and how the formula works.",
+    date: "2026-08-30",
+    readingTime: "Interactive",
+  },
+  {
     slug: "preparing-a-research-document",
     title: "Preparing a Research or Project Document",
     description:
