@@ -27,7 +27,7 @@ export const digestEntries: DigestEntry[] = [
     slug: "financial-calculators",
     title: "Financial Calculators",
     description:
-      "A hub of working calculators — SIP, lump-sum compounding, loan EMI, goal planning, CAGR, and inflation — each showing what it does, what goes in, and how the formula works.",
+      "A dashboard of 20 working calculators across personal finance, loans, valuation (CAPM, WACC, DDM, bonds), and corporate projects (NPV, IRR, payback, break-even, EOQ) — each showing what it does, what goes in, and how the formula works.",
     date: "2026-08-30",
     readingTime: "Interactive",
   },

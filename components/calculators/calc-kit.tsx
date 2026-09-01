@@ -93,6 +93,153 @@ export function Field({ label, value, onChange, min, max, step = 1, unit }: Fiel
 }
 
 /* ------------------------------------------------------------------ */
+/*  Segmented control (pill group)                                     */
+/* ------------------------------------------------------------------ */
+
+export function Segmented<T extends string | number>({
+  label,
+  value,
+  onChange,
+  options,
+}: {
+  label?: string;
+  value: T;
+  onChange: (v: T) => void;
+  options: { label: string; value: T }[];
+}) {
+  return (
+    <div>
+      {label && (
+        <p className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-[color:var(--text-faint)] mb-2">
+          {label}
+        </p>
+      )}
+      <div className="flex flex-wrap gap-2">
+        {options.map((o) => (
+          <button
+            key={String(o.value)}
+            type="button"
+            onClick={() => onChange(o.value)}
+            className={`rounded-full border px-3 py-1.5 text-[12px] transition-colors ${
+              value === o.value
+                ? "border-[color:var(--accent)] bg-[color:var(--accent-soft)] text-[color:var(--accent)]"
+                : "border-[color:var(--border-strong)] text-[color:var(--text-muted)] hover:border-[color:var(--accent)]"
+            }`}
+          >
+            {o.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Multi-year cash-flow input                                         */
+/* ------------------------------------------------------------------ */
+
+export function YearFlows({
+  values,
+  onChange,
+  min = 3,
+  max = 10,
+}: {
+  values: number[];
+  onChange: (v: number[]) => void;
+  min?: number;
+  max?: number;
+}) {
+  const setAt = (i: number, v: number) => {
+    const next = values.slice();
+    next[i] = v;
+    onChange(next);
+  };
+  const setCount = (n: number) => {
+    if (n < min || n > max) return;
+    if (n > values.length) onChange([...values, ...Array(n - values.length).fill(values[values.length - 1] ?? 0)]);
+    else onChange(values.slice(0, n));
+  };
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-2">
+        <p className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-[color:var(--text-faint)]">
+          Cash inflow per year
+        </p>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setCount(values.length - 1)}
+            className="h-6 w-6 rounded-md border border-[color:var(--border-strong)] text-[color:var(--text-muted)] hover:border-[color:var(--accent)]"
+            aria-label="Fewer years"
+          >
+            −
+          </button>
+          <span className="font-mono text-[12px] text-[color:var(--text-muted)] tabular-nums">
+            {values.length} yrs
+          </span>
+          <button
+            type="button"
+            onClick={() => setCount(values.length + 1)}
+            className="h-6 w-6 rounded-md border border-[color:var(--border-strong)] text-[color:var(--text-muted)] hover:border-[color:var(--accent)]"
+            aria-label="More years"
+          >
+            +
+          </button>
+        </div>
+      </div>
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+        {values.map((v, i) => (
+          <label key={i} className="flex items-center gap-1.5">
+            <span className="font-mono text-[10px] text-[color:var(--text-faint)] w-6">
+              Y{i + 1}
+            </span>
+            <input
+              type="number"
+              inputMode="decimal"
+              value={Number.isFinite(v) ? v : ""}
+              onChange={(e) => setAt(i, e.target.value === "" ? 0 : Number(e.target.value))}
+              className="w-full rounded-md border border-[color:var(--border-strong)] bg-[color:var(--bg)] px-2 py-1.5 text-right text-[13px] text-[color:var(--text)] tabular-nums"
+            />
+          </label>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Discounted cash-flow math                                          */
+/* ------------------------------------------------------------------ */
+
+/** NPV at a decimal rate. outlay is entered as a positive number (year 0). */
+export function npv(rate: number, outlay: number, flows: number[]): number {
+  return flows.reduce((acc, cf, t) => acc + cf / Math.pow(1 + rate, t + 1), -outlay);
+}
+
+/** IRR as a percentage, via bisection. Returns NaN if it does not converge. */
+export function irr(outlay: number, flows: number[]): number {
+  let lo = -0.9499;
+  let hi = 5;
+  let fLo = npv(lo, outlay, flows);
+  let fHi = npv(hi, outlay, flows);
+  if (!Number.isFinite(fLo) || !Number.isFinite(fHi) || fLo * fHi > 0) return NaN;
+  for (let k = 0; k < 200; k++) {
+    const mid = (lo + hi) / 2;
+    const fMid = npv(mid, outlay, flows);
+    if (Math.abs(fMid) < 1e-7) return mid * 100;
+    if (fLo * fMid < 0) {
+      hi = mid;
+      fHi = fMid;
+    } else {
+      lo = mid;
+      fLo = fMid;
+    }
+  }
+  return ((lo + hi) / 2) * 100;
+}
+
+/* ------------------------------------------------------------------ */
 /*  Result card + small stats                                          */
 /* ------------------------------------------------------------------ */
 

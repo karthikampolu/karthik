@@ -6,11 +6,11 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Financial Calculators — AK",
   description:
-    "A small hub of working financial calculators — SIP, lump-sum compounding, loan EMI, goal planning, CAGR, and inflation. Each one shows what it does, what goes in, and how the formula works.",
+    "A dashboard of 20 working financial calculators across personal finance, loans, investing & valuation, and corporate finance — each showing what it does, what goes in, and how the formula works.",
   openGraph: {
-    title: "Financial Calculators — a working hub",
+    title: "Financial Calculators — a working dashboard",
     description:
-      "SIP, compounding, EMI, goal planning, CAGR, inflation — interactive, with the formula and method behind each one.",
+      "20 interactive calculators — personal (SIP, retirement, SWP), loans, valuation (CAPM, WACC, DDM, bonds), and projects (NPV, IRR, payback, break-even, EOQ) — each with its formula and method.",
     type: "article",
   },
 };
@@ -23,9 +23,11 @@ export default function FinancialCalculatorsPage() {
         Financial Calculators
       </h1>
       <p className="text-[17px] leading-relaxed text-[color:var(--text-muted)] max-w-2xl">
-        A hub of small, working calculators for the money questions that come up
-        most often. Drag a slider or type a number and the answer updates live.
-        Every calculator has an{" "}
+        A dashboard of 20 working calculators, grouped into four areas &mdash;
+        personal finance, loans &amp; credit, investing &amp; valuation, and
+        corporate &amp; projects. So it runs from &ldquo;what will my SIP be
+        worth&rdquo; to NPV, IRR, WACC, and bond pricing. Drag a slider or type a
+        number and the answer updates live. Every calculator has an{" "}
         <span className="text-[color:var(--text)]">
           &ldquo;How it&rsquo;s calculated&rdquo;
         </span>{" "}
