@@ -8,6 +8,14 @@ export type DigestEntry = {
 
 export const digestEntries: DigestEntry[] = [
   {
+    slug: "digitalised-accounting",
+    title: "Digitalised Accounting",
+    description:
+      "A working mini accounting app inspired by Zoho Books — raise an invoice and watch the double entry auto-match into the journal, ledger, trial balance, P&L, balance sheet, cash flow, ratios, and charts.",
+    date: "2026-09-02",
+    readingTime: "Interactive",
+  },
+  {
     slug: "measurement-scales",
     title: "The Four Levels of Measurement",
     description:
