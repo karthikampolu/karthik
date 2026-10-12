@@ -8,6 +8,14 @@ export type DigestEntry = {
 
 export const digestEntries: DigestEntry[] = [
   {
+    slug: "marketing-management-prep",
+    title: "Marketing Management: Learn by Doing",
+    description:
+      "550+ practice MCQs for Marketing Management-I at easy, medium and hard levels. Each answer opens a flashcard, with timed mock tests, a progress dashboard, and a guide to how the paper is likely to be built.",
+    date: "2026-10-12",
+    readingTime: "Interactive",
+  },
+  {
     slug: "digitalised-accounting",
     title: "Digitalised Accounting",
     description:
