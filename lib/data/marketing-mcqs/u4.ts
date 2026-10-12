@@ -1,4 +1,4 @@
-import type { Row } from "./types";
+import type { Row } from "@/lib/exam-prep/types";
 
 /** Unit IV: segmentation, targeting, brand positioning and Martech. */
 export const u4: Row[] = [

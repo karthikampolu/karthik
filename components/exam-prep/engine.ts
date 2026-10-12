@@ -1,8 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import type { Level, Mcq, SetId, UnitId } from "@/lib/data/marketing-mcqs/types";
-import type { Bank } from "@/components/marketing/bank";
+import type { Level, Mcq, SetId, UnitId } from "@/lib/exam-prep/types";
+import type { Bank } from "@/components/exam-prep/bank";
 
 /* ------------------------------------------------------------------ */
 /*  Seeded randomness (so a question's option order is stable per      */
@@ -78,8 +78,6 @@ export type MockResult = {
   minutes: number;
 };
 
-const PROGRESS_KEY = "mktm503:progress:v1";
-const MOCKS_KEY = "mktm503:mocks:v1";
 
 function read<T>(key: string, fallback: T): T {
   try {
@@ -98,7 +96,13 @@ function write(key: string, value: unknown) {
   }
 }
 
-export function useProgress() {
+/**
+ * Progress and mock history for one subject, kept in localStorage under
+ * `${storageKey}:progress:v1` and `${storageKey}:mocks:v1`.
+ */
+export function useProgress(storageKey: string) {
+  const PROGRESS_KEY = `${storageKey}:progress:v1`;
+  const MOCKS_KEY = `${storageKey}:mocks:v1`;
   const [progress, setProgress] = useState<Progress>({});
   const [mocks, setMocks] = useState<MockResult[]>([]);
   const [ready, setReady] = useState(false);
@@ -107,7 +111,7 @@ export function useProgress() {
     setProgress(read<Progress>(PROGRESS_KEY, {}));
     setMocks(read<MockResult[]>(MOCKS_KEY, []));
     setReady(true);
-  }, []);
+  }, [PROGRESS_KEY, MOCKS_KEY]);
 
   const record = useCallback((results: { id: string; correct: boolean }[]) => {
     setProgress((prev) => {
@@ -119,7 +123,7 @@ export function useProgress() {
       write(PROGRESS_KEY, next);
       return next;
     });
-  }, []);
+  }, [PROGRESS_KEY]);
 
   const addMock = useCallback((m: MockResult) => {
     setMocks((prev) => {
@@ -127,14 +131,14 @@ export function useProgress() {
       write(MOCKS_KEY, next);
       return next;
     });
-  }, []);
+  }, [MOCKS_KEY]);
 
   const reset = useCallback(() => {
     setProgress({});
     setMocks([]);
     write(PROGRESS_KEY, {});
     write(MOCKS_KEY, []);
-  }, []);
+  }, [PROGRESS_KEY, MOCKS_KEY]);
 
   return { progress, mocks, ready, record, addMock, reset };
 }

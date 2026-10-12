@@ -1,4 +1,4 @@
-import type { Row } from "./types";
+import type { Row } from "@/lib/exam-prep/types";
 
 /** Unit VI: contemporary issues in marketing. */
 export const u6: Row[] = [

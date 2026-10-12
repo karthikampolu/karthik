@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { RotateCcw, Shuffle } from "lucide-react";
-import type { Mcq } from "@/lib/data/marketing-mcqs/types";
-import { useBank } from "@/components/marketing/bank";
+import type { Mcq } from "@/lib/exam-prep/types";
+import { useBank } from "@/components/exam-prep/bank";
 import {
   poolFor,
   present,
@@ -13,8 +13,8 @@ import {
   type Progress,
   type StatusFilter,
   type UnitFilter,
-} from "@/components/marketing/engine";
-import { Bar, Card, Chip, FlashCard, LevelBadge, Options } from "@/components/marketing/ui";
+} from "@/components/exam-prep/engine";
+import { Bar, Card, Chip, FlashCard, LevelBadge, Options } from "@/components/exam-prep/ui";
 
 export type PracticePreset = {
   unit?: UnitFilter;

@@ -1,4 +1,4 @@
-import type { Row } from "./types";
+import type { Row } from "@/lib/exam-prep/types";
 
 /** Unit V, part 1: products, product mix, life cycle, adoption, new product development. */
 export const u5a: Row[] = [

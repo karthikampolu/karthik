@@ -1,4 +1,4 @@
-import type { Row } from "./types";
+import type { Row } from "@/lib/exam-prep/types";
 
 /**
  * The 30 Part A questions from the uploaded sample paper (Paper Code A),

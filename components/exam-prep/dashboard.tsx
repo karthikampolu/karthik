@@ -1,15 +1,15 @@
 "use client";
 
 import { useMemo } from "react";
-import { useBank } from "@/components/marketing/bank";
+import { useBank } from "@/components/exam-prep/bank";
 import {
   tally,
   weakTopics,
   type MockResult,
   type Progress,
-} from "@/components/marketing/engine";
-import { Bar, Card } from "@/components/marketing/ui";
-import type { PracticePreset } from "@/components/marketing/practice";
+} from "@/components/exam-prep/engine";
+import { Bar, Card } from "@/components/exam-prep/ui";
+import type { PracticePreset } from "@/components/exam-prep/practice";
 
 type Props = {
   progress: Progress;

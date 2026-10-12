@@ -1,4 +1,4 @@
-import type { Row } from "./types";
+import type { Row } from "@/lib/exam-prep/types";
 
 /** Unit V, part 2: pricing, distribution channels, logistics, channel analytics. */
 export const u5b: Row[] = [

@@ -1,4 +1,4 @@
-import type { Row } from "./types";
+import type { Row } from "@/lib/exam-prep/types";
 
 /** Unit II: capturing marketing insights, environment, forecasting and productivity. */
 export const u2: Row[] = [

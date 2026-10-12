@@ -1,4 +1,4 @@
-import type { Row } from "./types";
+import type { Row } from "@/lib/exam-prep/types";
 
 /** Unit I: understanding marketing management and marketing strategies. */
 export const u1: Row[] = [

@@ -1,13 +1,4 @@
-export type PartBQuestion = {
-  q: string;
-  unit: string;
-  /** How likely I think a question on this topic is, from the sample paper and the syllabus. */
-  chance: "Very likely" | "Likely" | "Possible";
-  /** Skeleton of a full-marks answer: one line per heading you should write about. */
-  outline: string[];
-  /** A concrete example to anchor the answer. */
-  example?: string;
-};
+import type { GuideContent, PartBQuestion } from "@/lib/exam-prep/types";
 
 export const FORMAT = [
   { k: "Paper", v: "MKTM503, Marketing Management-I. 70 marks, 3 hours." },
@@ -238,5 +229,14 @@ export const MARKING_MATH = [
 ];
 
 /** Everything the Exam guide tab renders, passed to the client as one prop. */
-export const GUIDE = { FORMAT, STYLES, PART_B, ANSWER_TEMPLATE, TIME_PLAN, DAYS, MARKING_MATH };
-export type GuideContent = typeof GUIDE;
+export const GUIDE: GuideContent = {
+  FORMAT,
+  STYLES,
+  PART_B,
+  ANSWER_TEMPLATE,
+  TIME_PLAN,
+  DAYS,
+  MARKING_MATH,
+  SOURCE_NOTE:
+    "These predictions come from the one sample paper and the syllabus. They are an informed guess, not inside information. The answers here follow Kotler & Keller; where your faculty's notes differ, go with your notes.",
+};

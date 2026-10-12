@@ -1,4 +1,5 @@
-import type { Level, Mcq, Row, SetId, UnitId } from "./types";
+import type { Mcq, SetId, UnitId } from "@/lib/exam-prep/types";
+import { buildSet as build } from "@/lib/exam-prep/build";
 import { samplePaper } from "./sample-paper";
 import { u1 } from "./u1";
 import { u2 } from "./u2";
@@ -9,23 +10,7 @@ import { u5b } from "./u5b";
 import { u6 } from "./u6";
 
 export { UNITS, UNIT_BY_ID } from "./units";
-export type { Level, Mcq, SetId, UnitId } from "./types";
-
-const LEVEL: Record<Row[1], Level> = { e: "easy", m: "medium", h: "hard" };
-
-function build(set: SetId, rows: Row[]): Mcq[] {
-  return rows.map((r, i) => ({
-    id: `${set}-${i + 1}`,
-    set,
-    topic: r[0],
-    level: LEVEL[r[1]],
-    q: r[2],
-    options: r[3],
-    answer: r[4],
-    why: r[5],
-    note: r[6],
-  }));
-}
+export type { Level, Mcq, SetId, UnitId } from "@/lib/exam-prep/types";
 
 /** Questions are identified by position, so only ever append to a unit file. */
 export const BANK_BY_SET: Record<SetId, Mcq[]> = {

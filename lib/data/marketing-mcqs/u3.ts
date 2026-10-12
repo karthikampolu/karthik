@@ -1,4 +1,4 @@
-import type { Row } from "./types";
+import type { Row } from "@/lib/exam-prep/types";
 
 /** Unit III: consumer behaviour, buying process, organizational buying, sustainable consumption. */
 export const u3: Row[] = [

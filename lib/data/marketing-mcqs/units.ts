@@ -1,4 +1,4 @@
-import type { UnitMeta } from "./types";
+import type { UnitMeta } from "@/lib/exam-prep/types";
 
 export const UNITS: UnitMeta[] = [
   {

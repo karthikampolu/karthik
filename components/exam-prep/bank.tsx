@@ -1,8 +1,7 @@
 "use client";
 
 import { createContext, useContext, useMemo } from "react";
-import type { Mcq, SetId, UnitId, UnitMeta } from "@/lib/data/marketing-mcqs/types";
-import type { GuideContent } from "@/lib/data/marketing-mcqs/exam-guide";
+import type { GuideContent, Mcq, SetId, UnitId, UnitMeta } from "@/lib/exam-prep/types";
 
 /**
  * The question bank only reaches the browser through these props, which the

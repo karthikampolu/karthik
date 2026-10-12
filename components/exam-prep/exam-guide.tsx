@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
-import { useBank } from "@/components/marketing/bank";
-import { Card } from "@/components/marketing/ui";
+import { useBank } from "@/components/exam-prep/bank";
+import { Card } from "@/components/exam-prep/ui";
 
 const th =
   "px-3 py-2 text-left font-mono text-[10px] uppercase tracking-[0.12em] text-[color:var(--text-faint)] border-b border-[color:var(--border)] whitespace-nowrap";
@@ -17,7 +17,7 @@ const CHANCE_STYLE = {
 
 export default function ExamGuide() {
   const bank = useBank();
-  const { FORMAT, STYLES, PART_B, ANSWER_TEMPLATE, TIME_PLAN, DAYS, MARKING_MATH } = bank.guide;
+  const { FORMAT, STYLES, PART_B, ANSWER_TEMPLATE, TIME_PLAN, DAYS, MARKING_MATH, SOURCE_NOTE } = bank.guide;
   const [open, setOpen] = useState<number | null>(0);
 
   return (
@@ -211,11 +211,7 @@ export default function ExamGuide() {
       </Card>
 
       <div className="rounded-lg border-l-[3px] border-[color:var(--accent)] bg-[color:var(--accent-soft)] px-5 py-4">
-        <p className="text-[13.5px] leading-relaxed text-[color:var(--text)]">
-          These predictions come from the one sample paper and the syllabus. They are an informed guess,
-          not inside information. The answers here follow Kotler &amp; Keller; where your faculty's notes
-          differ, go with your notes.
-        </p>
+        <p className="text-[13.5px] leading-relaxed text-[color:var(--text)]">{SOURCE_NOTE}</p>
       </div>
     </div>
   );

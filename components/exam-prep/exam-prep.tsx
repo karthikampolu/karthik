@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import { BookOpen, ChartColumn, ClipboardList, Timer } from "lucide-react";
-import { useProgress } from "@/components/marketing/engine";
-import Practice, { type PracticePreset } from "@/components/marketing/practice";
-import MockTest from "@/components/marketing/mock-test";
-import Dashboard from "@/components/marketing/dashboard";
-import ExamGuide from "@/components/marketing/exam-guide";
-import { BankProvider, type PrepData } from "@/components/marketing/bank";
+import { useProgress } from "@/components/exam-prep/engine";
+import Practice, { type PracticePreset } from "@/components/exam-prep/practice";
+import MockTest from "@/components/exam-prep/mock-test";
+import Dashboard from "@/components/exam-prep/dashboard";
+import ExamGuide from "@/components/exam-prep/exam-guide";
+import { BankProvider, type PrepData } from "@/components/exam-prep/bank";
 
 type Tab = "practice" | "mock" | "dashboard" | "guide";
 
@@ -18,8 +18,9 @@ const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: "guide", label: "Exam guide", icon: <ClipboardList size={15} /> },
 ];
 
-export default function MarketingPrep({ data }: { data: PrepData }) {
-  const { progress, mocks, ready, record, addMock, reset } = useProgress();
+/** The full study app for one subject: practice, mocks, progress and the exam guide. */
+export default function ExamPrep({ data, storageKey }: { data: PrepData; storageKey: string }) {
+  const { progress, mocks, ready, record, addMock, reset } = useProgress(storageKey);
   const [tab, setTab] = useState<Tab>("practice");
   const [preset, setPreset] = useState<PracticePreset & { key: number }>({ key: 0 });
 

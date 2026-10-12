@@ -8,10 +8,18 @@ export type DigestEntry = {
 
 export const digestEntries: DigestEntry[] = [
   {
+    slug: "organizational-behaviour-prep",
+    title: "Organizational Behaviour: Learn by Doing",
+    description:
+      "Practice MCQs for Organizational Behaviour and HR Dynamics-I at easy, medium and hard levels, with flashcards, timed mock tests and a guide to the likely paper. Access code required.",
+    date: "2026-10-12",
+    readingTime: "Interactive",
+  },
+  {
     slug: "marketing-management-prep",
     title: "Marketing Management: Learn by Doing",
     description:
-      "550+ practice MCQs for Marketing Management-I at easy, medium and hard levels. Each answer opens a flashcard, with timed mock tests, a progress dashboard, and a guide to how the paper is likely to be built.",
+      "550+ practice MCQs for Marketing Management-I at easy, medium and hard levels. Each answer opens a flashcard, with timed mock tests, a progress dashboard, and a guide to how the paper is likely to be built. Access code required.",
     date: "2026-10-12",
     readingTime: "Interactive",
   },
