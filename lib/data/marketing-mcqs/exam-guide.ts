@@ -236,3 +236,7 @@ export const MARKING_MATH = [
   "Eliminate one option and a guess is worth about +0.17. Eliminate two and it's about +0.38. So always eliminate first, then answer.",
   "Skip only when you truly have no idea; a skipped question costs nothing and earns nothing.",
 ];
+
+/** Everything the Exam guide tab renders, passed to the client as one prop. */
+export const GUIDE = { FORMAT, STYLES, PART_B, ANSWER_TEMPLATE, TIME_PLAN, DAYS, MARKING_MATH };
+export type GuideContent = typeof GUIDE;

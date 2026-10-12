@@ -2,12 +2,8 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { RotateCcw, Shuffle } from "lucide-react";
-import {
-  UNITS,
-  BANK_BY_SET,
-  UNIT_BANK,
-  type Mcq,
-} from "@/lib/data/marketing-mcqs";
+import type { Mcq } from "@/lib/data/marketing-mcqs/types";
+import { useBank } from "@/components/marketing/bank";
 import {
   poolFor,
   present,
@@ -36,6 +32,7 @@ type Props = {
 };
 
 export default function Practice({ progress, ready, record, preset, active }: Props) {
+  const bank = useBank();
   const [unit, setUnit] = useState<UnitFilter>(preset?.unit ?? "all");
   const [level, setLevel] = useState<LevelFilter>(preset?.level ?? "all");
   const [status, setStatus] = useState<StatusFilter>(preset?.status ?? "all");
@@ -55,12 +52,12 @@ export default function Practice({ progress, ready, record, preset, active }: Pr
 
   useEffect(() => {
     if (!ready) return;
-    const pool = poolFor(unit, level, status, progressRef.current);
+    const pool = poolFor(bank, unit, level, status, progressRef.current);
     setQueue(shuffleOn ? shuffled(pool, session + round * 7919) : pool);
     setIdx(0);
     setPicked(null);
     setRun({ right: 0, wrong: 0 });
-  }, [unit, level, status, shuffleOn, round, ready, session]);
+  }, [bank, unit, level, status, shuffleOn, round, ready, session]);
 
   const q = queue[idx];
   const shown = useMemo(() => (q ? present(q, session) : null), [q, session]);
@@ -107,12 +104,12 @@ export default function Practice({ progress, ready, record, preset, active }: Pr
   }, [q, picked, pick, next, active]);
 
   const unitCounts = useMemo(() => {
-    const m: Record<string, number> = { all: UNIT_BANK.length, sp: BANK_BY_SET.sp.length };
-    for (const u of UNITS) m[u.id] = BANK_BY_SET[u.id].length;
+    const m: Record<string, number> = { all: bank.unitBank.length, sp: bank.bySet.sp.length };
+    for (const u of bank.units) m[u.id] = bank.bySet[u.id].length;
     return m;
-  }, []);
+  }, [bank]);
 
-  const overall = useMemo(() => tally(UNIT_BANK, progress), [progress]);
+  const overall = useMemo(() => tally(bank.unitBank, progress), [bank, progress]);
 
   return (
     <div className="space-y-5">
@@ -127,7 +124,7 @@ export default function Practice({ progress, ready, record, preset, active }: Pr
               <Chip active={unit === "all"} onClick={() => setUnit("all")}>
                 All · {unitCounts.all}
               </Chip>
-              {UNITS.map((u) => (
+              {bank.units.map((u) => (
                 <Chip
                   key={u.id}
                   active={unit === u.id}
@@ -255,7 +252,7 @@ export default function Practice({ progress, ready, record, preset, active }: Pr
             <div className="mb-3 flex flex-wrap items-center gap-2">
               <LevelBadge level={q.level} />
               <span className="font-mono text-[10.5px] uppercase tracking-[0.12em] text-[color:var(--text-faint)]">
-                {q.set === "sp" ? "Sample paper" : UNITS.find((u) => u.id === q.set)?.short} · {q.topic}
+                {q.set === "sp" ? "Sample paper" : bank.units.find((u) => u.id === q.set)?.short} · {q.topic}
               </span>
               <span className="ml-auto hidden sm:block text-[11px] text-[color:var(--text-faint)]">
                 Keys: 1–4 or A–D

@@ -1,15 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import {
-  UNITS,
-  UNIT_BANK,
-  BANK_BY_SET,
-  type Level,
-  type Mcq,
-  type SetId,
-  type UnitId,
-} from "@/lib/data/marketing-mcqs";
+import type { Level, Mcq, SetId, UnitId } from "@/lib/data/marketing-mcqs/types";
+import type { Bank } from "@/components/marketing/bank";
 
 /* ------------------------------------------------------------------ */
 /*  Seeded randomness (so a question's option order is stable per      */
@@ -166,12 +159,12 @@ const LEVEL_MIX: [Level, number][] = [
  * (see UNITS[].expected). With `preferUnseen`, questions you have not
  * answered yet are picked first so each mock stays fresh.
  */
-export function buildMock(progress: Progress, preferUnseen: boolean, seed: number): Mcq[] {
+export function buildMock(bank: Bank, progress: Progress, preferUnseen: boolean, seed: number): Mcq[] {
   const r = rng(seed);
   const picked: Mcq[] = [];
 
-  for (const unit of UNITS) {
-    const pool = shuffled(BANK_BY_SET[unit.id], seed ^ hash(unit.id));
+  for (const unit of bank.units) {
+    const pool = shuffled(bank.bySet[unit.id], seed ^ hash(unit.id));
     const ordered = preferUnseen
       ? [...pool.filter((q) => !progress[q.id]), ...pool.filter((q) => progress[q.id])]
       : pool;
@@ -201,7 +194,7 @@ export function buildMock(progress: Progress, preferUnseen: boolean, seed: numbe
   // Top up if a unit had too few questions available.
   if (picked.length < MOCK_SIZE) {
     const have = new Set(picked.map((q) => q.id));
-    for (const q of shuffled(UNIT_BANK, seed + 1)) {
+    for (const q of shuffled(bank.unitBank, seed + 1)) {
       if (picked.length >= MOCK_SIZE) break;
       if (!have.has(q.id)) picked.push(q);
     }
@@ -239,12 +232,13 @@ export type StatusFilter = "all" | "unseen" | "wrong" | "mastered";
 export type LevelFilter = Level | "all";
 
 export function poolFor(
+  bank: Bank,
   unit: UnitFilter,
   level: LevelFilter,
   status: StatusFilter,
   progress: Progress
 ): Mcq[] {
-  const base = unit === "all" ? UNIT_BANK : BANK_BY_SET[unit];
+  const base = unit === "all" ? bank.unitBank : bank.bySet[unit];
   return base.filter((q) => {
     if (level !== "all" && q.level !== level) return false;
     const p = progress[q.id];
@@ -255,9 +249,9 @@ export function poolFor(
   });
 }
 
-export function weakTopics(progress: Progress, limit = 8) {
+export function weakTopics(bank: Bank, progress: Progress, limit = 8) {
   const by = new Map<string, { n: number; c: number; unit: SetId }>();
-  for (const q of UNIT_BANK) {
+  for (const q of bank.unitBank) {
     const p = progress[q.id];
     if (!p) continue;
     const key = `${q.set}|${q.topic}`;

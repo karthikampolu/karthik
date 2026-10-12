@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { UNITS, UNIT_BANK, BANK_BY_SET } from "@/lib/data/marketing-mcqs";
+import { useBank } from "@/components/marketing/bank";
 import {
   tally,
   weakTopics,
@@ -21,16 +21,17 @@ type Props = {
 const TARGET = 28;
 
 export default function Dashboard({ progress, mocks, onPractice, onReset }: Props) {
-  const overall = useMemo(() => tally(UNIT_BANK, progress), [progress]);
+  const bank = useBank();
+  const overall = useMemo(() => tally(bank.unitBank, progress), [bank, progress]);
   const levels = useMemo(
     () =>
       (["easy", "medium", "hard"] as const).map((l) => {
-        const qs = UNIT_BANK.filter((q) => q.level === l);
+        const qs = bank.unitBank.filter((q) => q.level === l);
         return { l, ...tally(qs, progress), count: qs.length };
       }),
-    [progress]
+    [bank, progress]
   );
-  const weak = useMemo(() => weakTopics(progress), [progress]);
+  const weak = useMemo(() => weakTopics(bank, progress), [bank, progress]);
 
   const lastThree = mocks.slice(-3);
   const avg = lastThree.length ? lastThree.reduce((a, m) => a + m.score, 0) / lastThree.length : null;
@@ -113,8 +114,8 @@ export default function Dashboard({ progress, mocks, onPractice, onReset }: Prop
 
       <Card title="Progress by unit">
         <div className="space-y-4">
-          {UNITS.map((u) => {
-            const t = tally(BANK_BY_SET[u.id], progress);
+          {bank.units.map((u) => {
+            const t = tally(bank.bySet[u.id], progress);
             return (
               <div key={u.id}>
                 <div className="mb-1.5 flex flex-wrap items-baseline gap-x-3 gap-y-1">

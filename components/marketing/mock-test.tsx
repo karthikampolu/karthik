@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ChevronDown, ChevronLeft, ChevronRight, Timer } from "lucide-react";
-import { UNITS, type Mcq } from "@/lib/data/marketing-mcqs";
+import type { Mcq } from "@/lib/data/marketing-mcqs/types";
+import { useBank } from "@/components/marketing/bank";
 import {
   MARK_RIGHT,
   MARK_WRONG,
@@ -45,6 +46,7 @@ function fmtClock(s: number) {
 }
 
 export default function MockTest({ progress, ready, record, addMock, onPracticeWrong }: Props) {
+  const bank = useBank();
   const [phase, setPhase] = useState<Phase>("setup");
   const [minutes, setMinutes] = useState(45);
   const [preferUnseen, setPreferUnseen] = useState(true);
@@ -68,7 +70,7 @@ export default function MockTest({ progress, ready, record, addMock, onPracticeW
 
   const start = () => {
     const seed = Math.floor(Math.random() * 1e9);
-    const paper = buildMock(progress, preferUnseen, seed);
+    const paper = buildMock(bank, progress, preferUnseen, seed);
     setQs(paper);
     setShown(paper.map((q) => present(q, seed)));
     setAnswers(paper.map(() => null));
@@ -295,7 +297,7 @@ export default function MockTest({ progress, ready, record, addMock, onPracticeW
   /* ---------------- Result ---------------- */
   const score = scoreOf(stats.correct, stats.wrong);
   const gap = TARGET - score;
-  const perUnit = UNITS.map((u) => {
+  const perUnit = bank.units.map((u) => {
     let total = 0;
     let right = 0;
     qs.forEach((q, i) => {

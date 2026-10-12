@@ -2,16 +2,7 @@
 
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
-import { BANK_BY_SET, UNITS } from "@/lib/data/marketing-mcqs";
-import {
-  ANSWER_TEMPLATE,
-  DAYS,
-  FORMAT,
-  MARKING_MATH,
-  PART_B,
-  STYLES,
-  TIME_PLAN,
-} from "@/lib/data/marketing-mcqs/exam-guide";
+import { useBank } from "@/components/marketing/bank";
 import { Card } from "@/components/marketing/ui";
 
 const th =
@@ -25,6 +16,8 @@ const CHANCE_STYLE = {
 } as const;
 
 export default function ExamGuide() {
+  const bank = useBank();
+  const { FORMAT, STYLES, PART_B, ANSWER_TEMPLATE, TIME_PLAN, DAYS, MARKING_MATH } = bank.guide;
   const [open, setOpen] = useState<number | null>(0);
 
   return (
@@ -60,7 +53,7 @@ export default function ExamGuide() {
               </tr>
             </thead>
             <tbody>
-              {UNITS.map((u) => (
+              {bank.units.map((u) => (
                 <tr key={u.id}>
                   <td className={td}>
                     <span className="font-medium">{u.short}</span>
@@ -69,7 +62,7 @@ export default function ExamGuide() {
                   </td>
                   <td className={`${td} tabular-nums`}>{u.inSample}</td>
                   <td className={`${td} tabular-nums font-medium`}>{u.expected}</td>
-                  <td className={`${td} tabular-nums`}>{BANK_BY_SET[u.id].length}</td>
+                  <td className={`${td} tabular-nums`}>{bank.bySet[u.id].length}</td>
                 </tr>
               ))}
               <tr className="bg-[color:var(--bg)]">
@@ -77,7 +70,7 @@ export default function ExamGuide() {
                 <td className={`${td} tabular-nums font-medium`}>30</td>
                 <td className={`${td} tabular-nums font-medium`}>30</td>
                 <td className={`${td} tabular-nums font-medium`}>
-                  {UNITS.reduce((n, u) => n + BANK_BY_SET[u.id].length, 0)}
+                  {bank.unitBank.length}
                 </td>
               </tr>
             </tbody>

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { ArrowRight, Check, X, Lightbulb, TriangleAlert } from "lucide-react";
 import { LETTERS, type Shown } from "@/components/marketing/engine";
-import type { Level, Mcq } from "@/lib/data/marketing-mcqs";
+import type { Level, Mcq } from "@/lib/data/marketing-mcqs/types";
 
 export const GOOD = "#2f6b3f";
 export const GOOD_BG = "#e9f3ea";
