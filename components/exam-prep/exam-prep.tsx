@@ -1,19 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import { BookOpen, ChartColumn, ClipboardList, Timer } from "lucide-react";
+import { BookOpen, ChartColumn, ClipboardList, FileText, Timer } from "lucide-react";
 import { useProgress } from "@/components/exam-prep/engine";
 import Practice, { type PracticePreset } from "@/components/exam-prep/practice";
 import MockTest from "@/components/exam-prep/mock-test";
 import Dashboard from "@/components/exam-prep/dashboard";
 import ExamGuide from "@/components/exam-prep/exam-guide";
+import PredictedPapers from "@/components/exam-prep/predicted-papers";
 import { BankProvider, type PrepData } from "@/components/exam-prep/bank";
 
-type Tab = "practice" | "mock" | "dashboard" | "guide";
+type Tab = "practice" | "mock" | "papers" | "dashboard" | "guide";
 
 const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: "practice", label: "Practice", icon: <BookOpen size={15} /> },
   { id: "mock", label: "Mock test", icon: <Timer size={15} /> },
+  { id: "papers", label: "Predicted papers", icon: <FileText size={15} /> },
   { id: "dashboard", label: "Progress", icon: <ChartColumn size={15} /> },
   { id: "guide", label: "Exam guide", icon: <ClipboardList size={15} /> },
 ];
@@ -31,7 +33,7 @@ export default function ExamPrep({ data, storageKey }: { data: PrepData; storage
   };
 
   return (
-    <BankProvider data={data}>
+    <BankProvider data={data} storageKey={storageKey}>
       <div className="mt-8">
         <div
           role="tablist"
@@ -72,6 +74,15 @@ export default function ExamPrep({ data, storageKey }: { data: PrepData; storage
         </div>
         <div role="tabpanel" id="panel-mock" aria-labelledby="tab-mock" hidden={tab !== "mock"}>
           <MockTest
+            progress={progress}
+            ready={ready}
+            record={record}
+            addMock={addMock}
+            onPracticeWrong={() => goPractice({ unit: "all", status: "wrong" })}
+          />
+        </div>
+        <div role="tabpanel" id="panel-papers" aria-labelledby="tab-papers" hidden={tab !== "papers"}>
+          <PredictedPapers
             progress={progress}
             ready={ready}
             record={record}

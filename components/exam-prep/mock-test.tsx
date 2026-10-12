@@ -33,6 +33,8 @@ type Props = {
   record: (r: { id: string; correct: boolean }[]) => void;
   addMock: (m: MockResult) => void;
   onPracticeWrong: () => void;
+  /** A fixed predicted paper instead of a randomly built one. */
+  paper?: { title: string; ids: string[] };
 };
 
 type Phase = "setup" | "running" | "result";
@@ -45,7 +47,7 @@ function fmtClock(s: number) {
   return `${String(m).padStart(2, "0")}:${String(r).padStart(2, "0")}`;
 }
 
-export default function MockTest({ progress, ready, record, addMock, onPracticeWrong }: Props) {
+export default function MockTest({ progress, ready, record, addMock, onPracticeWrong, paper: fixed }: Props) {
   const bank = useBank();
   const [phase, setPhase] = useState<Phase>("setup");
   const [minutes, setMinutes] = useState(45);
@@ -61,16 +63,21 @@ export default function MockTest({ progress, ready, record, addMock, onPracticeW
   const [usedSeconds, setUsedSeconds] = useState(0);
 
   const deadline = useRef(0);
+  // Latest values for submit(), which also runs from the timer interval.
   const answersRef = useRef<(number | null)[]>([]);
-  answersRef.current = answers;
   const qsRef = useRef<Mcq[]>([]);
-  qsRef.current = qs;
   const shownRef = useRef<Shown[]>([]);
-  shownRef.current = shown;
+  useEffect(() => {
+    answersRef.current = answers;
+    qsRef.current = qs;
+    shownRef.current = shown;
+  }, [answers, qs, shown]);
 
   const start = () => {
     const seed = Math.floor(Math.random() * 1e9);
-    const paper = buildMock(bank, progress, preferUnseen, seed);
+    const paper = fixed
+      ? fixed.ids.map((id) => bank.unitBank.find((q) => q.id === id)).filter((q): q is Mcq => !!q)
+      : buildMock(bank, progress, preferUnseen, seed);
     setQs(paper);
     setShown(paper.map((q) => present(q, seed)));
     setAnswers(paper.map(() => null));
@@ -147,10 +154,12 @@ export default function MockTest({ progress, ready, record, addMock, onPracticeW
   if (phase === "setup") {
     return (
       <div className="space-y-5">
-        <Card title="Take a mock Part A">
+        <Card title={fixed ? `${fixed.title} — Part A` : "Take a mock Part A"}>
           <p className="text-[14.5px] leading-relaxed text-[color:var(--text-muted)] mb-4">
-            {MOCK_SIZE} questions picked to follow how I expect the real paper to be spread across
-            the units (see the Exam guide tab), with a mix of easy, medium and hard. Marking matches
+            {fixed
+              ? "A fixed set of 30 questions laid out like the real Part A, spread across the units the way I expect the paper to be. It's the same paper every time, so take it once under exam conditions and use random mocks for repeat practice."
+              : `${MOCK_SIZE} questions picked to follow how I expect the real paper to be spread across the units (see the Exam guide tab), with a mix of easy, medium and hard.`}{" "}
+            Marking matches
             your paper: <strong className="text-[color:var(--text)]">+{MARK_RIGHT}</strong> for a right
             answer, <strong className="text-[color:var(--text)]">{MARK_WRONG}</strong> for a wrong one,
             0 if you skip. No answers are shown until you submit.
@@ -169,14 +178,16 @@ export default function MockTest({ progress, ready, record, addMock, onPracticeW
                 ))}
               </div>
             </div>
-            <div>
-              <p className="mb-2 font-mono text-[10.5px] uppercase tracking-[0.14em] text-[color:var(--text-faint)]">
-                Questions
-              </p>
-              <Chip active={preferUnseen} onClick={() => setPreferUnseen((v) => !v)}>
-                {preferUnseen ? "prefer unseen" : "any"}
-              </Chip>
-            </div>
+            {!fixed && (
+              <div>
+                <p className="mb-2 font-mono text-[10.5px] uppercase tracking-[0.14em] text-[color:var(--text-faint)]">
+                  Questions
+                </p>
+                <Chip active={preferUnseen} onClick={() => setPreferUnseen((v) => !v)}>
+                  {preferUnseen ? "prefer unseen" : "any"}
+                </Chip>
+              </div>
+            )}
           </div>
 
           <button
@@ -185,7 +196,7 @@ export default function MockTest({ progress, ready, record, addMock, onPracticeW
             onClick={start}
             className="inline-flex items-center gap-2 rounded-full bg-[color:var(--text)] px-6 py-3 text-[15px] font-medium text-[color:var(--bg)] hover:bg-[#3a3830] disabled:opacity-50"
           >
-            <Timer size={16} /> Start mock
+            <Timer size={16} /> {fixed ? "Start Part A" : "Start mock"}
           </button>
           <p className="mt-3 text-[12.5px] text-[color:var(--text-faint)]">
             Your real exam gives you 90 minutes for the OMR part, so 45 minutes is a good pace to

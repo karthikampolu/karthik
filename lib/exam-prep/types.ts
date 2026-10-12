@@ -46,7 +46,22 @@ export type UnitMeta = {
 /*  Exam guide content                                                  */
 /* ------------------------------------------------------------------ */
 
+/** A full model answer for a 10-mark question, laid out the way it should be written. */
+export type ModelAnswer = {
+  /** Opening lines: define the topic. */
+  intro: string;
+  /** Headed points, in the order they should be written. */
+  sections: { h: string; points: string[] }[];
+  /** Optional comparison table to draw in the answer. */
+  table?: { caption: string; columns: string[]; rows: string[][] };
+  /** What to sketch, if a diagram earns marks here. */
+  diagram?: string;
+  conclusion: string;
+};
+
 export type PartBQuestion = {
+  /** Stable slug, used by predicted papers and saved drafts. */
+  id: string;
   q: string;
   unit: string;
   /** How likely a question on this topic seems, from the sample paper and the syllabus. */
@@ -55,6 +70,18 @@ export type PartBQuestion = {
   outline: string[];
   /** A concrete example to anchor the answer. */
   example?: string;
+  /** Full model answer. */
+  model?: ModelAnswer;
+};
+
+/** A complete predicted paper: a fixed Part A and five Part B questions. */
+export type PredictedPaper = {
+  id: string;
+  title: string;
+  /** Exactly 30 question ids from the unit bank. */
+  partA: string[];
+  /** Five PartBQuestion ids; the student attempts any four. */
+  partB: string[];
 };
 
 export type GuideContent = {
@@ -65,6 +92,7 @@ export type GuideContent = {
   TIME_PLAN: { part: string; mins: string; note: string }[];
   DAYS: { d: string; t: string; s: string }[];
   MARKING_MATH: string[];
+  PAPERS: PredictedPaper[];
   /** Closing note about where the answers come from. */
   SOURCE_NOTE: string;
 };

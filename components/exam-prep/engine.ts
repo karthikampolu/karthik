@@ -107,7 +107,10 @@ export function useProgress(storageKey: string) {
   const [mocks, setMocks] = useState<MockResult[]>([]);
   const [ready, setReady] = useState(false);
 
+  // localStorage only exists in the browser, so it is read after mount rather than
+  // during render; reading it during render would make server and client HTML differ.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setProgress(read<Progress>(PROGRESS_KEY, {}));
     setMocks(read<MockResult[]>(MOCKS_KEY, []));
     setReady(true);

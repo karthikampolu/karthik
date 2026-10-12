@@ -57,7 +57,7 @@ export function ExamGate({ returnTo, configured }: { returnTo: string; configure
         </form>
       ) : (
         <p className="text-[14px] text-[color:var(--text-muted)]">
-          Access isn't set up on this site yet.
+          Access isn’t set up on this site yet.
         </p>
       )}
     </div>

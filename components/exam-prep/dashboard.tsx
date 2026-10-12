@@ -175,7 +175,7 @@ export default function Dashboard({ progress, mocks, onPractice, onReset }: Prop
         <Card title="Weakest topics">
           {weak.length === 0 ? (
             <p className="text-[14px] leading-relaxed text-[color:var(--text-muted)]">
-              Nothing flagged yet. Topics show up here once you've answered at least two questions
+              Nothing flagged yet. Topics show up here once you’ve answered at least two questions
               from them and are below 75%.
             </p>
           ) : (

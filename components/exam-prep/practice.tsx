@@ -48,7 +48,9 @@ export default function Practice({ progress, ready, record, preset, active }: Pr
   // The queue is frozen when filters change, so answering a question never
   // reshuffles the list under you (e.g. a "wrong" question leaving the pool).
   const progressRef = useRef(progress);
-  progressRef.current = progress;
+  useEffect(() => {
+    progressRef.current = progress;
+  }, [progress]);
 
   useEffect(() => {
     if (!ready) return;

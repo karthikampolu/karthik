@@ -1,19 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown } from "lucide-react";
 import { useBank } from "@/components/exam-prep/bank";
 import { Card } from "@/components/exam-prep/ui";
+import { PartBItem } from "@/components/exam-prep/part-b";
 
 const th =
   "px-3 py-2 text-left font-mono text-[10px] uppercase tracking-[0.12em] text-[color:var(--text-faint)] border-b border-[color:var(--border)] whitespace-nowrap";
 const td = "px-3 py-2.5 text-[13.5px] text-[color:var(--text)] border-b border-[color:var(--border)] align-top";
-
-const CHANCE_STYLE = {
-  "Very likely": "border-[#e8b9b3] text-[#b3261e] bg-[#fdf1ef]",
-  Likely: "border-[#e7d3a1] text-[#8a6410] bg-[#fbf6e8]",
-  Possible: "border-[color:var(--border-strong)] text-[color:var(--text-muted)] bg-[color:var(--bg)]",
-} as const;
 
 export default function ExamGuide() {
   const bank = useBank();
@@ -102,64 +96,19 @@ export default function ExamGuide() {
       <div>
         <p className="font-display text-[22px] text-[color:var(--text)] mb-1">Predicted Part B questions</p>
         <p className="text-[14px] leading-relaxed text-[color:var(--text-muted)] mb-4">
-          You attempt 4 of 5, so you need about 6 well-prepared answers, not all 12. Choose the “very
-          likely” ones first. Each outline is the skeleton of a full-marks answer.
+          You attempt 4 of 5, so you need about 6–8 well-prepared answers, not all of them. Start with
+          the “very likely” ones. Each has an outline, a full model answer, and a timed writing mode.
         </p>
         <div className="space-y-2.5">
-          {PART_B.map((p, i) => {
-            const isOpen = open === i;
-            return (
-              <div
-                key={p.q}
-                className="rounded-xl border border-[color:var(--border)] bg-[color:var(--surface)]"
-              >
-                <button
-                  type="button"
-                  onClick={() => setOpen(isOpen ? null : i)}
-                  aria-expanded={isOpen}
-                  className="flex w-full items-start gap-3 px-4 py-3.5 text-left"
-                >
-                  <span className="mt-0.5 font-mono text-[11px] text-[color:var(--text-faint)] tabular-nums">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <span className="flex-1">
-                    <span className="block text-[15px] leading-snug text-[color:var(--text)]">{p.q}</span>
-                    <span className="mt-1.5 flex flex-wrap items-center gap-2">
-                      <span
-                        className={`rounded-full border px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.1em] ${CHANCE_STYLE[p.chance]}`}
-                      >
-                        {p.chance}
-                      </span>
-                      <span className="font-mono text-[10.5px] uppercase tracking-[0.1em] text-[color:var(--text-faint)]">
-                        {p.unit}
-                      </span>
-                    </span>
-                  </span>
-                  <ChevronDown
-                    size={16}
-                    className={`mt-1 shrink-0 text-[color:var(--text-faint)] transition-transform ${isOpen ? "rotate-180" : ""}`}
-                  />
-                </button>
-                {isOpen && (
-                  <div className="px-4 pb-4 pl-11">
-                    <ol className="list-decimal space-y-1.5 pl-4 text-[14px] leading-relaxed text-[color:var(--text-muted)] marker:text-[color:var(--text-faint)]">
-                      {p.outline.map((line) => (
-                        <li key={line}>{line}</li>
-                      ))}
-                    </ol>
-                    {p.example && (
-                      <p className="mt-3 rounded-lg bg-[color:var(--accent-soft)] px-3 py-2 text-[13px] leading-relaxed text-[color:var(--text)]">
-                        <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-[color:var(--accent)] mr-2">
-                          Example
-                        </span>
-                        {p.example}
-                      </p>
-                    )}
-                  </div>
-                )}
-              </div>
-            );
-          })}
+          {PART_B.map((p, i) => (
+            <PartBItem
+              key={p.id}
+              question={p}
+              number={i + 1}
+              open={open === i}
+              onToggle={() => setOpen(open === i ? null : i)}
+            />
+          ))}
         </div>
       </div>
 

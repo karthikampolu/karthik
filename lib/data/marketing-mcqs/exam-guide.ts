@@ -1,4 +1,7 @@
 import type { GuideContent, PartBQuestion } from "@/lib/exam-prep/types";
+import { MODELS_1 } from "./model-answers-1";
+import { MODELS_2 } from "./model-answers-2";
+import { PAPERS } from "./papers";
 
 export const FORMAT = [
   { k: "Paper", v: "MKTM503, Marketing Management-I. 70 marks, 3 hours." },
@@ -38,6 +41,7 @@ export const STYLES = [
 
 export const PART_B: PartBQuestion[] = [
   {
+    id: "npd",
     q: "Explain the new product development process in detail with an example.",
     unit: "Unit V",
     chance: "Very likely",
@@ -56,6 +60,7 @@ export const PART_B: PartBQuestion[] = [
     example: "A protein snack bar or an electric scooter taken through all 8 stages.",
   },
   {
+    id: "market-intelligence",
     q: "As CMO of a smartphone company entering a new international market, explain how you would analyse the macro and micro environment, use research, forecast demand and ensure marketing productivity.",
     unit: "Unit II",
     chance: "Very likely",
@@ -70,6 +75,7 @@ export const PART_B: PartBQuestion[] = [
     example: "Entering a market like Indonesia or Brazil, with local competitors and local regulation.",
   },
   {
+    id: "plc-indian-brands",
     q: "Why is the product life cycle an indicator of marketing success? Select five Indian brands that entered decline and were repositioned to extend their life cycle.",
     unit: "Unit V",
     chance: "Very likely",
@@ -85,6 +91,7 @@ export const PART_B: PartBQuestion[] = [
       "Commonly cited Indian cases: Royal Enfield (revived as a premium leisure-riding brand), Maggi (relaunch after the 2015 ban, rebuilt on trust), Bajaj Chetak (returned as an electric scooter), Lifebuoy (from carbolic soap to hygiene and handwashing), Glow & Lovely (renamed from Fair & Lovely). Check each against your own sources and swap in brands you know well.",
   },
   {
+    id: "digital-ai-stp",
     q: "Evaluate the impact of digital marketing on targeting and positioning. How have AI and data analytics changed traditional approaches?",
     unit: "Unit IV + VI",
     chance: "Very likely",
@@ -99,6 +106,7 @@ export const PART_B: PartBQuestion[] = [
     ],
   },
   {
+    id: "sales-channel-criteria",
     q: "Imagine yourself as a sales head. What criteria affect your decisions about the different sales channels?",
     unit: "Unit V",
     chance: "Very likely",
@@ -114,6 +122,7 @@ export const PART_B: PartBQuestion[] = [
     example: "FMCG goes intensive, a luxury watch goes exclusive, industrial machines go direct.",
   },
   {
+    id: "buying-decision-process",
     q: "Explain the consumer buying decision process and how marketers can influence each stage.",
     unit: "Unit III",
     chance: "Likely",
@@ -127,6 +136,7 @@ export const PART_B: PartBQuestion[] = [
     example: "Buying a laptop or a smartphone.",
   },
   {
+    id: "stp-positioning",
     q: "Describe segmentation, targeting and positioning with a suitable example. Write a positioning statement.",
     unit: "Unit IV",
     chance: "Likely",
@@ -139,6 +149,7 @@ export const PART_B: PartBQuestion[] = [
     ],
   },
   {
+    id: "channel-conflict",
     q: "Discuss channel conflict and multichannel marketing systems, and how conflict can be managed.",
     unit: "Unit V",
     chance: "Possible",
@@ -151,6 +162,7 @@ export const PART_B: PartBQuestion[] = [
     ],
   },
   {
+    id: "marketing-concepts-value",
     q: "Trace the evolution of marketing concepts and explain how companies create and deliver customer value.",
     unit: "Unit I",
     chance: "Likely",
@@ -163,6 +175,7 @@ export const PART_B: PartBQuestion[] = [
     ],
   },
   {
+    id: "pricing",
     q: "Explain the steps in setting a price and the main price adaptation strategies.",
     unit: "Unit V",
     chance: "Likely",
@@ -175,6 +188,7 @@ export const PART_B: PartBQuestion[] = [
     ],
   },
   {
+    id: "contemporary-issues",
     q: "Discuss any two contemporary issues in marketing: sustainability, social marketing, neuromarketing, demarketing or generative AI.",
     unit: "Unit VI",
     chance: "Possible",
@@ -187,6 +201,7 @@ export const PART_B: PartBQuestion[] = [
     ],
   },
   {
+    id: "strategic-planning",
     q: "Explain corporate and division strategic planning, including the BCG matrix, Ansoff matrix and global entry modes.",
     unit: "Unit I",
     chance: "Possible",
@@ -197,6 +212,86 @@ export const PART_B: PartBQuestion[] = [
       "Going global: whether, where, how (exporting, licensing, joint venture, direct investment).",
       "Standardize vs adapt the marketing mix.",
     ],
+  },
+  {
+    id: "product-levels-mix",
+    q: "Explain the levels of a product and the dimensions of a product mix. How do product-line decisions help a company grow?",
+    unit: "Unit V",
+    chance: "Likely",
+    outline: [
+      "Five product levels with one example (core benefit → potential product).",
+      "Product hierarchy: need family down to item (SKU).",
+      "Product mix: width, length, depth, consistency, with a small worked example.",
+      "Line decisions: upward/downward/two-way stretching, filling, pruning.",
+      "Classification: consumer and industrial goods.",
+    ],
+  },
+  {
+    id: "organizational-buying",
+    q: "Explain the organizational buying process. How does it differ from consumer buying?",
+    unit: "Unit III",
+    chance: "Likely",
+    outline: [
+      "Characteristics of business markets (derived demand, fewer larger buyers, professional purchasing).",
+      "Buying situations: straight rebuy, modified rebuy, new task.",
+      "Buying centre roles.",
+      "The eight stages, problem recognition to performance review.",
+      "Four groups of influences, plus a consumer-vs-business comparison table.",
+    ],
+  },
+  {
+    id: "consumer-behaviour-factors",
+    q: "Discuss the factors influencing consumer buying behaviour with suitable examples.",
+    unit: "Unit III",
+    chance: "Likely",
+    outline: [
+      "Cultural: culture, subculture, social class.",
+      "Social: reference groups, family, roles and status.",
+      "Personal: age and life stage, occupation, economic situation, personality, lifestyle.",
+      "Psychological: motivation, perception, learning, beliefs and attitudes.",
+      "Marketing implications and one worked example.",
+    ],
+  },
+  {
+    id: "segmentation-bases",
+    q: "What are the bases for segmenting consumer and business markets? What makes a segment effective?",
+    unit: "Unit IV",
+    chance: "Likely",
+    outline: [
+      "Consumer bases: geographic, demographic, psychographic, behavioural, with variables.",
+      "Business bases: demographic, operating, purchasing approach, situational, personal.",
+      "Criteria: measurable, substantial, accessible, differentiable, actionable.",
+      "Evaluating segments: size and growth, structural attractiveness, fit with resources.",
+      "Example with a table.",
+    ],
+  },
+  {
+    id: "demand-forecasting",
+    q: "Explain the methods of measuring and forecasting market demand.",
+    unit: "Unit II",
+    chance: "Possible",
+    outline: [
+      "Key terms: market demand, market potential, company forecast, market share.",
+      "Current demand: Q = n × q × p, market-buildup, multiple-factor index, chain-ratio.",
+      "Forecasting: buyer intentions, sales-force composite, expert opinion and Delphi, time series, test markets.",
+      "A worked numerical example.",
+      "Choosing a method by situation.",
+    ],
+  },
+  {
+    id: "launch-marketing-mix",
+    q: "Case: You are launching a new product in India (for example a plant-based protein drink). Design its marketing mix.",
+    unit: "Unit I + V",
+    chance: "Likely",
+    outline: [
+      "Target and positioning first.",
+      "Product: levels, variants, packaging.",
+      "Price: method and launch strategy (value or penetration), price points.",
+      "Place: channels and intensity; how coverage grows.",
+      "Promotion: tools matched to the target.",
+      "How success will be measured.",
+    ],
+    example: "Use the product named in the question; keep the same six-part structure.",
   },
 ];
 
@@ -232,11 +327,12 @@ export const MARKING_MATH = [
 export const GUIDE: GuideContent = {
   FORMAT,
   STYLES,
-  PART_B,
+  PART_B: PART_B.map((p) => ({ ...p, model: MODELS_1[p.id] ?? MODELS_2[p.id] })),
   ANSWER_TEMPLATE,
   TIME_PLAN,
   DAYS,
   MARKING_MATH,
+  PAPERS,
   SOURCE_NOTE:
     "These predictions come from the one sample paper and the syllabus. They are an informed guess, not inside information. The answers here follow Kotler & Keller; where your faculty's notes differ, go with your notes.",
 };

@@ -1,4 +1,7 @@
 import type { GuideContent, PartBQuestion } from "@/lib/exam-prep/types";
+import { MODELS_1 } from "./model-answers-1";
+import { MODELS_2 } from "./model-answers-2";
+import { PAPERS } from "./papers";
 
 const FORMAT = [
   { k: "Paper", v: "MGNM581, Organizational Behaviour and Human Resource Dynamics-I. 70 marks, 3 hours." },
@@ -38,6 +41,7 @@ const STYLES = [
 
 const PART_B: PartBQuestion[] = [
   {
+    id: "ob-art-science",
     q: "“The study of organizational behaviour is really an art that pretends to be a science.” Argue against this statement and discuss the significance of OB.",
     unit: "Unit II",
     chance: "Very likely",
@@ -53,6 +57,7 @@ const PART_B: PartBQuestion[] = [
     example: "A research finding that contradicts common sense, such as 'a happy worker is not always a productive worker'.",
   },
   {
+    id: "learning-ob-mod",
     q: "Compare and contrast the major theories of learning in OB. How can behaviour modification techniques be used to improve employee performance?",
     unit: "Unit III",
     chance: "Very likely",
@@ -68,6 +73,7 @@ const PART_B: PartBQuestion[] = [
     ],
   },
   {
+    id: "mbo-goal-setting",
     q: "Explain what an MBO programme is and discuss the common elements of MBO programmes and goal-setting theory.",
     unit: "Unit IV",
     chance: "Very likely",
@@ -82,6 +88,7 @@ const PART_B: PartBQuestion[] = [
     ],
   },
   {
+    id: "vanessa-tom-case",
     q: "Case: Vanessa (engineering) and Tom (procurement) clash over buying expensive leading-edge parts. As Vice-President, how would you handle this?",
     unit: "Unit VI",
     chance: "Very likely",
@@ -96,6 +103,7 @@ const PART_B: PartBQuestion[] = [
     ],
   },
   {
+    id: "conflict-styles",
     q: "Discuss the different conflict styles in organizational behaviour. How does understanding them help managers resolve workplace conflict? Give a real-life example.",
     unit: "Unit VI",
     chance: "Very likely",
@@ -109,6 +117,7 @@ const PART_B: PartBQuestion[] = [
     ],
   },
   {
+    id: "motivation-theories",
     q: "Compare early and contemporary theories of motivation. How can managers apply them?",
     unit: "Unit IV",
     chance: "Likely",
@@ -121,6 +130,7 @@ const PART_B: PartBQuestion[] = [
     ],
   },
   {
+    id: "leadership-theories",
     q: "Explain trait, behavioural and contingency theories of leadership.",
     unit: "Unit IV",
     chance: "Likely",
@@ -133,6 +143,7 @@ const PART_B: PartBQuestion[] = [
     ],
   },
   {
+    id: "personality-ta-johari",
     q: "Explain personality assessment, transactional analysis and the Johari Window as tools for understanding individual behaviour.",
     unit: "Unit III",
     chance: "Likely",
@@ -145,6 +156,7 @@ const PART_B: PartBQuestion[] = [
     ],
   },
   {
+    id: "management-thought-ai",
     q: "Trace the evolution of management thought from classical to modern approaches, and discuss the role of AI in managerial decision making.",
     unit: "Unit I",
     chance: "Likely",
@@ -157,6 +169,7 @@ const PART_B: PartBQuestion[] = [
     ],
   },
   {
+    id: "structure-digital",
     q: "Discuss the types of organizational structure and how technology and digital transformation are changing organizational design.",
     unit: "Unit V",
     chance: "Likely",
@@ -169,6 +182,7 @@ const PART_B: PartBQuestion[] = [
     ],
   },
   {
+    id: "culture-gender",
     q: "How is organizational culture created and sustained? Discuss its role in gender equality and inclusion.",
     unit: "Unit VI",
     chance: "Possible",
@@ -181,6 +195,7 @@ const PART_B: PartBQuestion[] = [
     ],
   },
   {
+    id: "engagement-vuca-shrm",
     q: "Discuss employee engagement in the virtual workspace and workforce agility in a VUCA world, with sustainable HRM practices.",
     unit: "Unit VI",
     chance: "Possible",
@@ -191,6 +206,84 @@ const PART_B: PartBQuestion[] = [
       "Virtual work challenges (trust, isolation, proximity bias, fatigue) and practices to address them.",
       "Sustainable and green HRM practices.",
     ],
+  },
+  {
+    id: "manager-skills-roles",
+    q: "Explain the skills and roles of a manager. How do they vary across levels of management?",
+    unit: "Unit I",
+    chance: "Likely",
+    outline: [
+      "Functions: planning, organizing, leading, controlling.",
+      "Levels: first-line, middle, top.",
+      "Mintzberg's 10 roles in three groups, with examples.",
+      "Katz's technical, human and conceptual skills, and how their importance shifts by level.",
+      "Characteristics of management.",
+    ],
+  },
+  {
+    id: "ob-model-disciplines",
+    q: "Explain the model of organizational behaviour and the disciplines that contribute to OB. Discuss the models of OB.",
+    unit: "Unit II",
+    chance: "Likely",
+    outline: [
+      "Robbins' inputs → processes → outcomes at three levels.",
+      "Contributing disciplines with what each adds.",
+      "Davis's autocratic, custodial, supportive, collegial (and system) models in a table.",
+      "Relationship between management and OB.",
+    ],
+  },
+  {
+    id: "values-attitudes-satisfaction",
+    q: "Discuss values, attitudes and job satisfaction. How do employees respond to job dissatisfaction?",
+    unit: "Unit III",
+    chance: "Likely",
+    outline: [
+      "Values: Rokeach terminal and instrumental; Hofstede dimensions.",
+      "Attitude components and cognitive dissonance.",
+      "Major job attitudes, including the three types of commitment.",
+      "Job satisfaction: causes and outcomes.",
+      "The EVLN framework, with managerial implications.",
+    ],
+  },
+  {
+    id: "perception-attribution",
+    q: "Explain perception and attribution theory. What common errors affect judgments of people at work?",
+    unit: "Unit III",
+    chance: "Possible",
+    outline: [
+      "Perception and the factors that influence it.",
+      "Kelley's three cues and the internal/external rules.",
+      "Fundamental attribution error and self-serving bias.",
+      "Shortcuts: halo, contrast, stereotyping, selective perception, projection.",
+      "Applications and remedies.",
+    ],
+  },
+  {
+    id: "power-negotiation",
+    q: "Discuss the bases of power and the process of negotiation in organizations.",
+    unit: "Unit VI",
+    chance: "Likely",
+    outline: [
+      "French and Raven's five bases; formal vs personal power.",
+      "Dependency: importance, scarcity, non-substitutability.",
+      "Distributive vs integrative bargaining; BATNA.",
+      "The five-step negotiation process and third-party roles.",
+      "An example.",
+    ],
+  },
+  {
+    id: "motivation-case",
+    q: "Case: After a pay freeze, a team of experienced engineers shows low motivation and two members have resigned. As their manager, how would you use motivation theories to respond?",
+    unit: "Unit IV",
+    chance: "Likely",
+    outline: [
+      "Diagnose with Herzberg, equity, expectancy and needs theories.",
+      "Restore fairness and transparency.",
+      "Strengthen motivators through job enrichment and recognition.",
+      "Use goal-setting and link rewards to what people value.",
+      "Retention steps and follow-up.",
+    ],
+    example: "Adapt the same structure to any motivation case: diagnose with two or three theories, then act on each.",
   },
 ];
 
@@ -225,11 +318,12 @@ const MARKING_MATH = [
 export const GUIDE: GuideContent = {
   FORMAT,
   STYLES,
-  PART_B,
+  PART_B: PART_B.map((p) => ({ ...p, model: MODELS_1[p.id] ?? MODELS_2[p.id] })),
   ANSWER_TEMPLATE,
   TIME_PLAN,
   DAYS,
   MARKING_MATH,
+  PAPERS,
   SOURCE_NOTE:
     "These predictions come from the one sample paper and the syllabus. They are an informed guess, not inside information. The answers here follow Robbins & Coulter (Management) and standard OB texts; where your faculty's notes differ, go with your notes.",
 };

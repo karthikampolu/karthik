@@ -22,11 +22,21 @@ export type Bank = {
   /** All unit questions, excluding the sample paper. */
   unitBank: Mcq[];
   guide: GuideContent;
+  /** localStorage prefix for this subject. */
+  storageKey: string;
 };
 
 const BankContext = createContext<Bank | null>(null);
 
-export function BankProvider({ data, children }: { data: PrepData; children: React.ReactNode }) {
+export function BankProvider({
+  data,
+  storageKey,
+  children,
+}: {
+  data: PrepData;
+  storageKey: string;
+  children: React.ReactNode;
+}) {
   const bank = useMemo<Bank>(() => {
     const unitIds = data.units.map((u) => u.id);
     return {
@@ -35,8 +45,9 @@ export function BankProvider({ data, children }: { data: PrepData; children: Rea
       bySet: data.bySet,
       unitBank: unitIds.flatMap((id) => data.bySet[id]),
       guide: data.guide,
+      storageKey,
     };
-  }, [data]);
+  }, [data, storageKey]);
   return <BankContext.Provider value={bank}>{children}</BankContext.Provider>;
 }
 
