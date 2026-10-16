@@ -12,6 +12,7 @@ const td = "px-3 py-2.5 text-[13.5px] text-[color:var(--text)] border-b border-[
 export default function ExamGuide() {
   const bank = useBank();
   const { FORMAT, STYLES, PART_B, ANSWER_TEMPLATE, TIME_PLAN, DAYS, MARKING_MATH, SOURCE_NOTE } = bank.guide;
+  const { BLUEPRINT_NOTE, FOCUS, FORMULAS } = bank.guide;
   const [open, setOpen] = useState<number | null>(0);
 
   return (
@@ -31,9 +32,8 @@ export default function ExamGuide() {
 
       <Card title="How a new paper is likely to be built">
         <p className="text-[14px] leading-relaxed text-[color:var(--text-muted)] mb-4">
-          The uploaded sample leaned hard on Unit V and Unit III and had nothing from Unit VI. The
-          sample itself says the real paper may differ, so my prediction pulls it back toward the full
-          syllabus. The mock tests in this app follow the “My prediction” column.
+          {BLUEPRINT_NOTE ??
+            "The table compares the uploaded sample with my prediction for the real paper. The sample itself says the final paper may differ, so the prediction spreads questions across the full syllabus. The mock tests in this app follow the “My prediction” column."}
         </p>
         <div className="overflow-x-auto rounded-lg border border-[color:var(--border)]">
           <table className="w-full border-collapse">
@@ -92,6 +92,52 @@ export default function ExamGuide() {
           ))}
         </div>
       </Card>
+
+      {FOCUS && (
+        <Card title="Numericals to master, in order">
+          <ol className="space-y-3">
+            {FOCUS.map((f, i) => (
+              <li key={f.topic} className="flex gap-3">
+                <span className="w-6 shrink-0 pt-0.5 font-mono text-[11px] tabular-nums text-[color:var(--text-faint)]">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div>
+                  <p className="text-[14.5px] text-[color:var(--text)]">
+                    <span className="font-medium">{f.topic}</span>
+                    <span className="text-[color:var(--text-faint)]">
+                      {" "}
+                      · {f.unit} · {f.chance}
+                    </span>
+                  </p>
+                  <p className="text-[13.5px] leading-relaxed text-[color:var(--text-muted)]">{f.why}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </Card>
+      )}
+
+      {FORMULAS && (
+        <Card title="Formula sheet">
+          <div className="grid gap-5 md:grid-cols-2">
+            {FORMULAS.map((g) => (
+              <div key={g.group}>
+                <p className="mb-1.5 font-mono text-[10.5px] uppercase tracking-[0.12em] text-[color:var(--accent)]">
+                  {g.group}
+                </p>
+                <dl className="space-y-1.5">
+                  {g.items.map((it) => (
+                    <div key={it.name} className="text-[13.5px] leading-snug">
+                      <dt className="text-[color:var(--text-muted)]">{it.name}</dt>
+                      <dd className="font-mono text-[13px] text-[color:var(--text)]">{it.f}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
 
       <div>
         <p className="font-display text-[22px] text-[color:var(--text)] mb-1">Predicted Part B questions</p>

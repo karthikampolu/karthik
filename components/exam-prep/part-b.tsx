@@ -10,11 +10,11 @@ const th =
 const td = "px-3 py-2 text-[13px] text-[color:var(--text)] border-b border-[color:var(--border)] align-top";
 
 /** A full model answer, laid out the way it should be written in the exam. */
-export function ModelAnswerView({ model }: { model: ModelAnswer }) {
+export function ModelAnswerView({ model, numerical = false }: { model: ModelAnswer; numerical?: boolean }) {
   return (
     <div className="space-y-4 rounded-xl border border-[color:var(--border)] bg-[color:var(--bg)] p-5">
       <p className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-[color:var(--accent)]">
-        Model answer
+        {numerical ? "Worked solution" : "Model answer"}
       </p>
       <p className="text-[14.5px] leading-relaxed text-[color:var(--text)]">{model.intro}</p>
 
@@ -70,13 +70,16 @@ export function ModelAnswerView({ model }: { model: ModelAnswer }) {
       )}
 
       <div>
-        <p className="mb-1 text-[14.5px] font-medium text-[color:var(--text)]">Conclusion</p>
+        <p className="mb-1 text-[14.5px] font-medium text-[color:var(--text)]">
+          {numerical ? "Answer and interpretation" : "Conclusion"}
+        </p>
         <p className="text-[14px] leading-relaxed text-[color:var(--text-muted)]">{model.conclusion}</p>
       </div>
 
       <p className="border-t border-[color:var(--border)] pt-3 text-[12.5px] leading-relaxed text-[color:var(--text-faint)]">
-        In the exam, write each point as one or two full sentences and add your own example where you
-        can. That turns this into a 1.5–2 page answer (about 400–500 words).
+        {numerical
+          ? "In the exam, write the formula first, draw the working table, show each substitution, box the answer with its unit, and end with a one-line interpretation. Method marks are given even if the final figure slips."
+          : "In the exam, write each point as one or two full sentences and add your own example where you can. That turns this into a 1.5–2 page answer (about 400–500 words)."}
       </p>
     </div>
   );
@@ -95,6 +98,7 @@ function fmt(s: number) {
 export function PartBPractice({ question }: { question: PartBQuestion }) {
   const { storageKey } = useBank();
   const draftKey = `${storageKey}:partb:${question.id}`;
+  const numerical = question.kind === "numerical";
 
   // Only mounted after a click (never server-rendered), so reading storage here is safe.
   const [text, setText] = useState(() => {
@@ -172,11 +176,17 @@ export function PartBPractice({ question }: { question: PartBQuestion }) {
         onChange={(e) => setText(e.target.value)}
         rows={12}
         aria-label={`Your answer to: ${question.q}`}
-        placeholder="Write as you would in the exam: definition, framework, points with examples, conclusion. Your draft is saved in this browser."
+        placeholder={
+          numerical
+            ? "Solve it on paper first, then note your key figures here (means, totals, the final answer) to compare. Your notes are saved in this browser."
+            : "Write as you would in the exam: definition, framework, points with examples, conclusion. Your draft is saved in this browser."
+        }
         className="w-full rounded-lg border border-[color:var(--border-strong)] bg-[color:var(--surface)] px-4 py-3 text-[14.5px] leading-relaxed text-[color:var(--text)]"
       />
       <p className="text-[12.5px] text-[color:var(--text-faint)]">
-        {words} words · aim for 400–500 in {WRITE_MINUTES} minutes
+        {numerical
+          ? `Aim to finish the full working in ${WRITE_MINUTES} minutes`
+          : `${words} words · aim for 400–500 in ${WRITE_MINUTES} minutes`}
       </p>
 
       {!revealed ? (
@@ -194,7 +204,7 @@ export function PartBPractice({ question }: { question: PartBQuestion }) {
         <div className="space-y-4">
           <div className="rounded-xl border border-[color:var(--border)] bg-[color:var(--surface)] p-4">
             <p className="mb-2 text-[14px] font-medium text-[color:var(--text)]">
-              Tick each point your answer covered
+              {numerical ? "Tick each step you got right" : "Tick each point your answer covered"}
             </p>
             <div className="space-y-2">
               {question.outline.map((line, i) => (
@@ -214,11 +224,13 @@ export function PartBPractice({ question }: { question: PartBQuestion }) {
               <span className="font-medium tabular-nums">
                 {covered}/{question.outline.length}
               </span>{" "}
-              → roughly <span className="font-medium tabular-nums">{selfScore}/10</span> if each point is
-              explained with an example. Presentation (headings, diagram, conclusion) decides the top band.
+              → roughly <span className="font-medium tabular-nums">{selfScore}/10</span>
+              {numerical
+                ? ". A neat working table and a stated interpretation decide the last mark or two."
+                : " if each point is explained with an example. Presentation (headings, diagram, conclusion) decides the top band."}
             </p>
           </div>
-          {question.model && <ModelAnswerView model={question.model} />}
+          {question.model && <ModelAnswerView model={question.model} numerical={numerical} />}
         </div>
       )}
     </div>
@@ -244,6 +256,7 @@ export function PartBItem({
   onToggle: () => void;
 }) {
   const [mode, setMode] = useState<"none" | "model" | "write">("none");
+  const numerical = p.kind === "numerical";
 
   return (
     <div className="rounded-xl border border-[color:var(--border)] bg-[color:var(--surface)]">
@@ -264,6 +277,11 @@ export function PartBItem({
             >
               {p.chance}
             </span>
+            {numerical && (
+              <span className="rounded-full border border-[color:var(--border-strong)] px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.1em] text-[color:var(--text-muted)]">
+                Numerical
+              </span>
+            )}
             <span className="font-mono text-[10.5px] uppercase tracking-[0.1em] text-[color:var(--text-faint)]">
               {p.unit}
             </span>
@@ -278,7 +296,7 @@ export function PartBItem({
         <div className="space-y-4 px-4 pb-4 sm:pl-11">
           <div>
             <p className="mb-1.5 font-mono text-[10.5px] uppercase tracking-[0.14em] text-[color:var(--text-faint)]">
-              Outline
+              {numerical ? "Steps" : "Outline"}
             </p>
             <ol className="list-decimal space-y-1.5 pl-4 text-[14px] leading-relaxed text-[color:var(--text-muted)] marker:text-[color:var(--text-faint)]">
               {p.outline.map((line) => (
@@ -306,7 +324,7 @@ export function PartBItem({
                     : "border-[color:var(--border-strong)] text-[color:var(--text)] hover:border-[color:var(--text)]"
                 }`}
               >
-                <FileText size={14} /> Model answer
+                <FileText size={14} /> {numerical ? "Worked solution" : "Model answer"}
               </button>
             )}
             <button
@@ -319,10 +337,10 @@ export function PartBItem({
                   : "border-[color:var(--border-strong)] text-[color:var(--text)] hover:border-[color:var(--text)]"
               }`}
             >
-              <PenLine size={14} /> Practise writing (25 min)
+              <PenLine size={14} /> {numerical ? "Solve against the clock (25 min)" : "Practise writing (25 min)"}
             </button>
           </div>
-          {mode === "model" && p.model && <ModelAnswerView model={p.model} />}
+          {mode === "model" && p.model && <ModelAnswerView model={p.model} numerical={numerical} />}
           {mode === "write" && <PartBPractice question={p} />}
         </div>
       )}

@@ -333,6 +333,8 @@ export const GUIDE: GuideContent = {
   DAYS,
   MARKING_MATH,
   PAPERS,
+  BLUEPRINT_NOTE:
+    "The uploaded sample leaned hard on Unit V and Unit III and had nothing from Unit VI. The sample itself says the real paper may differ, so my prediction pulls it back toward the full syllabus. The mock tests in this app follow the “My prediction” column.",
   SOURCE_NOTE:
     "These predictions come from the one sample paper and the syllabus. They are an informed guess, not inside information. The answers here follow Kotler & Keller; where your faculty's notes differ, go with your notes.",
 };

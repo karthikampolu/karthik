@@ -8,6 +8,14 @@ export type DigestEntry = {
 
 export const digestEntries: DigestEntry[] = [
   {
+    slug: "business-statistics-prep",
+    title: "Business Statistics: Learn by Doing",
+    description:
+      "430+ practice MCQs for Research Methodology-I (business statistics) with flashcards, worked solutions for the likely Part B numericals, a formula sheet, timed mocks and predicted papers. Access code required.",
+    date: "2026-10-16",
+    readingTime: "Interactive",
+  },
+  {
     slug: "organizational-behaviour-prep",
     title: "Organizational Behaviour: Learn by Doing",
     description:

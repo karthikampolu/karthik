@@ -72,6 +72,8 @@ export type PartBQuestion = {
   example?: string;
   /** Full model answer. */
   model?: ModelAnswer;
+  /** "numerical" shows the model as a worked solution and drops the word-count targets. */
+  kind?: "theory" | "numerical";
 };
 
 /** A complete predicted paper: a fixed Part A and five Part B questions. */
@@ -93,6 +95,12 @@ export type GuideContent = {
   DAYS: { d: string; t: string; s: string }[];
   MARKING_MATH: string[];
   PAPERS: PredictedPaper[];
+  /** Explains the unit blueprint table; a generic line is shown when absent. */
+  BLUEPRINT_NOTE?: string;
+  /** Ranked list of the numericals to master first (numerical subjects only). */
+  FOCUS?: { topic: string; unit: string; chance: "Very likely" | "Likely" | "Possible"; why: string }[];
+  /** One-page formula sheet, grouped by topic. */
+  FORMULAS?: { group: string; items: { name: string; f: string }[] }[];
   /** Closing note about where the answers come from. */
   SOURCE_NOTE: string;
 };
