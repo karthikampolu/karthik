@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Nav from "@/components/nav";
 import Footer from "@/components/footer";
+import SiteChrome from "@/components/site-chrome";
 
 export const metadata: Metadata = {
   title: "AK — Business Engineering",
@@ -25,9 +26,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-body antialiased min-h-screen flex flex-col">
-        <Nav />
+        <SiteChrome>
+          <Nav />
+        </SiteChrome>
         <main className="flex-1">{children}</main>
-        <Footer />
+        <SiteChrome>
+          <Footer />
+        </SiteChrome>
       </body>
     </html>
   );
